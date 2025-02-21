@@ -1,5 +1,3 @@
-package main;
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -10,7 +8,7 @@ public abstract class Game extends JPanel implements Runnable {
 
     public Game() {
         // Keep set resolution otherwise dumb scaling things
-        setResolution(new Dimension(800, 600));
+        setPreferredSize(new Dimension(800, 600));
         setFocusable(true);
     }
 
