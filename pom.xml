@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>PuzzleBobble</groupId>
-    <artifactId>PuzzleBobble</artifactId>
+    <artifactId>TileGameEngine</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
@@ -41,5 +41,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

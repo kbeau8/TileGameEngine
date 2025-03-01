@@ -10,12 +10,13 @@ public class GameSelectionScreen extends JFrame {
 
     public GameSelectionScreen(PlayerProfile player) {
         this.player = player;
-        setTitle("Select a Game");
+        setTitle("GAME SELECTION");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new GridLayout(3, 1));
+        setResizable(false);
+        setLayout(new GridLayout(5, 1));
 
-        JLabel welcomeLabel = new JLabel("Welcome, " + player.getUsername(), SwingConstants.CENTER);
+        JLabel welcomeLabel = new JLabel("Welcome, " + player.getUsername() + "!", SwingConstants.CENTER);
         add(welcomeLabel);
 
         JButton exampleButton = new JButton("Placeholder Game");
@@ -24,12 +25,12 @@ public class GameSelectionScreen extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
+                // this needs to call a specific game inherited from abstract game class
                 // new Game(player);
             }
         });
 
         add(exampleButton);
-
         setLocationRelativeTo(null);
         setVisible(true);
     }

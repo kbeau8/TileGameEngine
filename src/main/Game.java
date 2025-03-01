@@ -8,7 +8,7 @@ public abstract class Game extends JPanel implements Runnable {
 
     public Game() {
         // Keep set resolution otherwise dumb scaling things
-        setPreferredSize(new Dimension(800, 600));
+        setSize(new Dimension(800, 600));
         setFocusable(true);
     }
 

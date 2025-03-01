@@ -1,3 +1,5 @@
+package logic;
+
 import tiles.TileMap;
 import entities.Entity;
 
