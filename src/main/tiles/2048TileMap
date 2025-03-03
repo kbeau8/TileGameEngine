@@ -1,0 +1,37 @@
+public class 2048TileMap extends TileMap {
+    public 2048TileMap() {
+        super(4, 4, ?); //what is size for?
+        initializeBlankTiles()
+        
+    }
+
+    public void initializeBlankTiles() {
+        for (int i = 0; i < this.width; i++) {
+            for (int j = 0; j < this.height; j++) {
+                this.tiles[i][j] = new 2048Tile();
+            }
+        }
+    }
+
+    public boolean isEmptySpace() {
+        for (int i = 0; i < this.width; i++) {
+            for (int j = 0; j < this.height; j++) {
+                if(this.tiles[i][j].isEmpty) {
+                    return true
+                }
+            }
+        }
+        return false
+    }
+
+    public boolean is2048 () {
+        for (int i = 0; i < this.width; i++) {
+            for (int j = 0; j < this.height; j++) {
+                if(this.tiles[i][j].value == 2048) {
+                    return true
+                }
+            }
+        }
+        return false
+    }
+}
