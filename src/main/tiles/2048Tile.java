@@ -2,21 +2,21 @@ import java.utli.HashMap;
 
 class 2048TileImages {
     static final HashMap<Integer, Image> imageMap = new HashMap<>();
+    static final String file_path = "../2048-assets"
 
     static {
-        //MAKE SURE THESE ARE ACTULALLY THE FILE NAMES
-        this.imageMap.put(0, new Image("src/main/resources/0.png").getImage());
-        this.imageMap.put(2, new Image("src/main/resources/2.png").getImage());
-        this.imageMap.put(4, new Image("src/main/resources/4.png").getImage());
-        this.imageMap.put(8,
-        this.imageMap.put(16,
-        this.imageMap.put(32,
-        this.imageMap.put(64,
-        this.imageMap.put(128,
-        this.imageMap.put(256,
-        this.imageMap.put(512,
-        this.imageMap.put(1024,
-        this.imageMap.put(2048,
+        imageMap.put(0, new Image(file_path + "blank.png").getImage());
+        imageMap.put(2, new Image(file_path + "tile-2.png").getImage());
+        imageMap.put(4, new Image(file_path + "tile-4.png").getImage());
+        imageMap.put(8, new Image(file_path + "tile-8.png").getImage());
+        imageMap.put(16, new Image(file_path + "tile-16.png").getImage());
+        imageMap.put(32, new Image(file_path + "tile-32.png").getImage());
+        imageMap.put(64, new Image(file_path + "tile-64.png").getImage());
+        imageMap.put(128, new Image(file_path + "tile-128.png").getImage());
+        imageMap.put(256, new Image(file_path + "tile-256.png").getImage());
+        imageMap.put(512, new Image(file_path + "tile-512.png").getImage());
+        imageMap.put(1024, new Image(file_path + "tile-1024.png").getImage());
+        imageMap.put(2048, new Image(file_path + "tile-2048.png").getImage());
     }
 }
 
