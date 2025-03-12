@@ -44,6 +44,17 @@ public class 2048Tile extends Tile {
         return false
     }
 
+    public boolean isNotEmpty() {
+        if(this.value == 0) {
+            return false
+        }
+        return true
+    }
+
+    public void makeEmpty() {
+        this.updateValue(0)
+    }
+
     public void updateValue(int value) {
         this.value = value
         this.image = 2048TileImages.imageMap.get(value)
