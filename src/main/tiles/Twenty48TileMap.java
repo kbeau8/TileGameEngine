@@ -1,8 +1,12 @@
+package tiles;
+import java.util.HashMap;
+import java.awt.*;
+
 public class Twenty48TileMap extends TileMap {
     private static final HashMap<Integer, Image> imageMap = new HashMap<Integer, Image>();
     public Twenty48TileMap() {
-        super(4, 4, //?); //what is size for?
-        initializeBlankTiles()
+        super(4, 4, 0, ); //what is size for?
+        initializeBlankTiles();        
     }
 
     private void initializeBlankTiles() {
@@ -17,22 +21,22 @@ public class Twenty48TileMap extends TileMap {
         for (int i = 0; i < this.height; ++i) {
             for (int j = 0; j < this.width; ++j) {
                 if(this.tiles[i][j].isEmpty()) {
-                    return true
+                    return true;
                 }
             }
         }
-        return false
+        return false;
     }
 
     public boolean is2048 () {
         for (int i = 0; i < this.height; ++i) {
             for (int j = 0; j < this.width; ++j) {
                 if(this.tiles[i][j].getValue() == 2048) {
-                    return true
+                    return true;
                 }
             }
         }
-        return false
+        return false;
     }
 
     public void addTile() {
@@ -67,15 +71,15 @@ public class Twenty48TileMap extends TileMap {
                 combineTiles(tiles[i][j], tiles[i][j-1])
             }
         }
-        this.smooshRight()
+        this.smooshRight();
     }
 
     public void smooshRight() {
         for(int i = 0; i >= this.height; ++i) {
             for(int j = this.width-1; j > 0; --j) {
                 if(tiles[i][j].isEmpty()) {
-                    tiles[i][j] = tiles[i][j-1]
-                    tiles[i][j-1].makeEmpty() 
+                    tiles[i][j] = tiles[i][j-1];
+                    tiles[i][j-1].makeEmpty();
                 }
             }
         }

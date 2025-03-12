@@ -1,4 +1,5 @@
 package logic;
+import tiles.TileMap;
 
 public abstract class GameLogic {
     // Probably needs more
