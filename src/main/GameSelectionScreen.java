@@ -10,27 +10,36 @@ public class GameSelectionScreen extends JFrame {
 
     public GameSelectionScreen(PlayerProfile player) {
         this.player = player;
-        setTitle("GAME SELECTION");
+        setTitle("Select a Game");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
-        setLayout(new GridLayout(5, 1));
+        setLayout(new GridLayout(12, 3));
 
         JLabel welcomeLabel = new JLabel("Welcome, " + player.getUsername() + "!", SwingConstants.CENTER);
         add(welcomeLabel);
 
-        JButton exampleButton = new JButton("Placeholder Game");
+        JButton twenty48Button = new JButton("Play 2048");
+        JButton puzzlesAndDragonsButton = new JButton("Play Puzzles & Dragons");
 
-        exampleButton.addActionListener(new ActionListener() {
+        twenty48Button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                // this needs to call a specific game inherited from abstract game class
-                // new Game(player);
+                // new Twenty48Game();
             }
         });
 
-        add(exampleButton);
+        puzzlesAndDragonsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                // new padGame();
+            }
+        });
+
+        add(twenty48Button);
+        add(puzzlesAndDragonsButton);
         setLocationRelativeTo(null);
         setVisible(true);
     }
