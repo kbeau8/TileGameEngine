@@ -34,7 +34,7 @@ public class GameSelectionScreen extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                // new padGame();
+                // new PADGame();
             }
         });
 

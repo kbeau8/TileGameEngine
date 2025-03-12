@@ -12,6 +12,7 @@ public abstract class Game extends JPanel implements Runnable {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         frame.setSize(800, 600);
+        frame.setResizable(false);
         setFocusable(true);
     }
 
