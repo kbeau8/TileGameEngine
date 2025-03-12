@@ -1,6 +1,6 @@
 import java.utli.HashMap;
 
-class 2048TileImages {
+class Twenty48TileImages {
     static final HashMap<Integer, Image> imageMap = new HashMap<>();
     static final String file_path = "../2048-assets"
 
@@ -20,14 +20,14 @@ class 2048TileImages {
     }
 }
 
-public class 2048Tile extends Tile {
+public class Twenty48Tile extends Tile {
     public int value;
     public static size = 100;
     
-    public 2048Tile(int value, int x, int y) {
+    public Twenty48Tile(int value, int x, int y) {
         super()
         this.value = value
-        this.image = 2048TileImages.imageMap.get(value)
+        this.image = Twenty48TileImages.imageMap.get(value)
         this.x = x
         this.y = y
         this.size = size
@@ -57,6 +57,6 @@ public class 2048Tile extends Tile {
 
     public void updateValue(int value) {
         this.value = value
-        this.image = 2048TileImages.imageMap.get(value)
+        this.image = Twenty48TileImages.imageMap.get(value)
     }
 }

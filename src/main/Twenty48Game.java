@@ -1,6 +1,6 @@
 import java.awt.*;
 
-public class 2048Game extends Game {
+public class Twenty48Game extends Game {
 
     @Override
     public void update() {
@@ -12,4 +12,8 @@ public class 2048Game extends Game {
         // Implement the render logic for the 2048 game
     }
 
+    public void main() {
+        Twenty48Game game = new Twenty48Game()
+        game.start()
+    }
 }

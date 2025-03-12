@@ -1,13 +1,13 @@
-public class 2048GameLogic extends GameLogic {
+public class Twenty48GameLogic extends GameLogic {
     @Override
-    public void checkWinConditions(2048TileMap tilemap) {
+    public void checkWinConditions(Twenty48TileMap tilemap) {
         if(tilemap.is2048()) {
             //do win condition
         }
     }
 
     @Override
-    public boolean isGameOver(2048TileMap tilemap) {
+    public boolean isGameOver(Twenty48TileMap tilemap) {
         //no empty space on board AND no tiles to combine
         if(tilemap.isEmptySpace() && )
 

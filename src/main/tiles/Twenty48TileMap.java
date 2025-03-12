@@ -1,6 +1,6 @@
-public class 2048TileMap extends TileMap {
+public class Twenty48TileMap extends TileMap {
     private static final HashMap<Integer, Image> imageMap = new HashMap<Integer, Image>();
-    public 2048TileMap() {
+    public Twenty48TileMap() {
         super(4, 4, //?); //what is size for?
         initializeBlankTiles()
     }
@@ -8,7 +8,7 @@ public class 2048TileMap extends TileMap {
     private void initializeBlankTiles() {
         for (int i = 0; i < this.height; ++i) {
             for (int j = 0; j < this.width; ++j) {
-                this.tiles[i][j] = new 2048Tile(0, i, j);
+                this.tiles[i][j] = new Twenty48Tile(0, i, j);
             }
         }
     }
@@ -44,11 +44,11 @@ public class 2048TileMap extends TileMap {
                 x = (int) (Math.random() * this.width);
                 y = (int) (Math.random() * this.height);
             }
-            this.tiles[x][y] = new 2048Tile(2, x, y);
+            this.tiles[x][y] = new Twenty48Tile(2, x, y);
         }
     }
 
-    public void combineTiles(2048Tile tile1, 2048Tile tile2) {
+    public void combineTiles(Twenty48Tile tile1, Twenty48Tile tile2) {
         //tile1 stays and tile2 dissapears
         if (tile1.value == tile2.value) {
             int newValue = tile1.value * 2;
