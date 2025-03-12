@@ -7,8 +7,11 @@ public abstract class Game extends JPanel implements Runnable {
     private Thread gameThread;
 
     public Game() {
-        // Keep set resolution otherwise dumb scaling things
-        setSize(new Dimension(800, 600));
+        JFrame frame = new JFrame();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+        frame.setSize(800, 600);
         setFocusable(true);
     }
 
