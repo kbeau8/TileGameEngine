@@ -4,9 +4,12 @@ import java.awt.*;
 
 public class Twenty48TileMap extends TileMap {
     private static final HashMap<Integer, Image> imageMap = new HashMap<Integer, Image>();
+    private Twenty48Tile[][] tiles;
     public Twenty48TileMap() {
-        super(4, 4, 0, ); //what is size for?
-        initializeBlankTiles();        
+        super();
+        this.height = 4;
+        this.width = 4;
+        initializeBlankTiles();  
     }
 
     private void initializeBlankTiles() {
@@ -44,7 +47,7 @@ public class Twenty48TileMap extends TileMap {
         if (isEmptySpace()) {
             int x = (int) (Math.random() * this.width);
             int y = (int) (Math.random() * this.height);
-            while (!this.tiles[x][y].isEmpty()) {
+            while (!((Twenty48Tile)this.tiles[x][y]).isEmpty()) {
                 x = (int) (Math.random() * this.width);
                 y = (int) (Math.random() * this.height);
             }
@@ -63,12 +66,12 @@ public class Twenty48TileMap extends TileMap {
 
     public void swipeRight() {
         //go up to down columns but right to left for rows
-        this.smooshRight()
-        for(int i = 0; i >= this.height; ++i) {
+        this.smooshRight();
+        for(int i = 0; i < this.height; ++i) {
             for(int j = this.width-1; j > 0; --j) {
                 //not checking last tile
-                if(tiles[i][j].isNotEmpty() AND tiles[i][j-1].isNotEmpty)
-                combineTiles(tiles[i][j], tiles[i][j-1])
+                if(tiles[i][j].isNotEmpty() && tiles[i][j-1].isNotEmpty())
+                this.combineTiles(tiles[i][j], tiles[i][j-1]);
             }
         }
         this.smooshRight();

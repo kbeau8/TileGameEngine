@@ -26,7 +26,7 @@ public class GameSelectionScreen extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                // new Twenty48Game();
+                new Twenty48Game(player);
             }
         });
 
