@@ -1,7 +1,6 @@
 import java.awt.*;
 import java.util.HashMap;
 import tiles.Twenty48TileMap;
-import tiles.Twenty48Tile;
 
 import profiles.PlayerProfile;
 
@@ -16,9 +15,8 @@ public class Twenty48Game extends Game {
         this.player = player;
         this.grid = new Twenty48TileMap();
         start();
+        
     }
-
-
 
     @Override
     public void update() {

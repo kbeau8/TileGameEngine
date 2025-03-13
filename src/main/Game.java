@@ -6,8 +6,6 @@ public abstract class Game extends JPanel implements Runnable {
     protected boolean running = false;
     private Thread gameThread;
 
-
-    //game class should pass in player that is logged in for high score recording
     public Game() {
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
