@@ -14,6 +14,7 @@ public abstract class Game extends JPanel implements Runnable {
         frame.setSize(800, 600);
         frame.setResizable(false);
         setFocusable(true);
+        frame.add(this);
     }
 
     public void start() {
@@ -32,6 +33,7 @@ public abstract class Game extends JPanel implements Runnable {
     }
 
     public abstract void update();
+
     public abstract void render(Graphics2D g);
 
     @Override
