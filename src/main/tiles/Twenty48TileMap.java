@@ -5,13 +5,17 @@ import java.awt.*;
 import java.util.Random;
 
 public class Twenty48TileMap extends TileMap {
-    private static final HashMap<Integer, Image> imageMap = new HashMap<Integer, Image>();
+    // private static final HashMap<Integer, Image> imageMap = new HashMap<Integer,
+    // Image>();
+    // can change these to private later if needed, need setters and getters if so
     public Twenty48Tile[][] tiles;
+    public int score;
 
     public Twenty48TileMap() {
         super();
         this.height = 4;
         this.width = 4;
+        this.score = 0;
         initializeBlankTiles();
     }
 
@@ -70,34 +74,106 @@ public class Twenty48TileMap extends TileMap {
         if (tile1.value == tile2.value) {
             int newValue = tile1.value * 2;
             tile1.updateValue(newValue);
-            tile2.updateValue(0);
+            tile2.makeEmpty();
+            this.score += newValue;
         }
     }
 
+    // fix: right now it only combines tiles that are right next to each other
+    // rather than same tiles that have empty space in between
     public void swipeRight() {
-        // go up to down columns but right to left for rows
-        this.smooshRight();
-        for (int i = 0; i < this.height; ++i) {
-            for (int j = this.width - 1; j > 0; --j) {
-                // not checking last tile
-                if (tiles[i][j].isNotEmpty() && tiles[i][j - 1].isNotEmpty())
-                    this.combineTiles(tiles[i][j], tiles[i][j - 1]);
-            }
-        }
-        this.smooshRight();
-    }
+        Twenty48Tile current;
+        Twenty48Tile right;
 
-    public void smooshRight() {
-        for (int i = 0; i >= this.height; ++i) {
-            for (int j = this.width - 1; j > 0; --j) {
-                if (tiles[i][j].isEmpty()) {
-                    tiles[i][j] = tiles[i][j - 1];
-                    tiles[i][j - 1].makeEmpty();
+        this.smooshRight();
+        for (int row = 0; row < tiles.length; row++) { // Iterate over rows
+            for (int col = 2; col >= 0; col--) { // Iterate over columns backwards, skip the first one
+                current = tiles[row][col];
+                right = tiles[row][col + 1];
+                if (current.isEmpty()) {
+                    continue;
+                } else {
+                    // combine same tiles and update score
+                    if (right.isNotEmpty()) {
+                        this.combineTiles(right, current);
+                    } else {
+                        continue;
+                    }
                 }
             }
         }
 
+        this.smooshRight();
+        this.addTile();
+
     }
+
+    public void smooshRight() {
+        Twenty48Tile current;
+        Twenty48Tile right;
+
+        // this loop works backwards, idk how to explain it 
+        for (int row = 0; row < tiles.length; row++) { // Iterate over rows
+            for (int col = 2; col >= 0; col--) { // Iterate over columns backwards, skip the first one
+                current = tiles[row][col];
+                right = tiles[row][col + 1];
+
+                if (current.isEmpty()) {
+                    continue;
+                } else {
+                    if (right.isEmpty()) {
+                        right.updateValue(current.getValue());
+                        current.makeEmpty();
+                    }
+                }
+
+            }
+        }
+
+        // this loop works forward to get rid of more gaps
+        for (int row = 0; row < tiles.length; row++) { // Iterate over rows
+            for (int col = 0; col < 3; col++) { // Iterate over columns forwards, skip the last one
+                current = tiles[row][col];
+                right = tiles[row][col + 1];
+
+                if (current.isEmpty()) {
+                    continue;
+                } else {
+                    if (right.isEmpty()) {
+                        right.updateValue(current.getValue());
+                        current.makeEmpty();
+                    }
+                }
+
+            }
+        }
+
+    }
+
+    // public void swipeRight() {
+    // // go up to down columns but right to left for rows
+    // this.smooshRight();
+    // for (int i = 0; i < this.height; ++i) {
+    // for (int j = this.width - 1; j > 0; --j) {
+    // // not checking last tile
+    // if (tiles[i][j].isNotEmpty() && tiles[i][j - 1].isNotEmpty())
+    // this.combineTiles(tiles[i][j], tiles[i][j - 1]);
+    // }
+    // }
+    // this.smooshRight();
+    // }
+
+    // public void smooshRight() {
+    // for (int i = 0; i >= this.height; ++i) {
+    // for (int j = this.width - 1; j > 0; --j) {
+    // if (tiles[i][j].isEmpty()) {
+    // tiles[i][j] = tiles[i][j - 1];
+    // tiles[i][j - 1].makeEmpty();
+    // }
+    // }
+    // }
+
+    // }
 
     // algo: smoosh right, swipe right, smoosh right?
 }

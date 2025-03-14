@@ -45,20 +45,18 @@ public class Twenty48Game extends Game implements KeyListener {
 
         if (currentFrame != null) {
             int newWidth = currentFrame.getWidth() + 400; // Increase width by 100// Increase height by 100
-            currentFrame.setSize(newWidth, currentFrame.getHeight());
+            currentFrame.setSize(newWidth, currentFrame.getHeight() + 200);
         }
 
     }
 
     // Implement the keyPressed method
-    // TODO: update scores on key presses
     @Override
     public void keyPressed(KeyEvent e) {
         // takes key inputs and does an action for a specific key
         int code = e.getKeyCode();
         if (code == KeyEvent.VK_RIGHT) {
-            System.out.println("RIGHT!");
-            grid.swipeRight(); // not working at the moment
+            grid.swipeRight();
         }
 
         if (code == KeyEvent.VK_LEFT) {
@@ -91,6 +89,9 @@ public class Twenty48Game extends Game implements KeyListener {
     @Override
     public void update() {
         // Implement the update logic for the 2048 game
+        this.gameLogic.updateScore(grid.score, player);
+        // add other game logic here
+
     }
 
     public void renderTiles(Graphics2D g, Twenty48TileMap map) {
@@ -146,13 +147,16 @@ public class Twenty48Game extends Game implements KeyListener {
         g.drawString("Player: " + player.getUsername(), game1Settings[0] + 10,
                 game1Settings[1] + game1Settings[2] + 30);
 
-        g.drawString("Score: " + this.score, game1Settings[0] + 10,
+        g.drawString("High Score: " + player.getHighScore("2048"), game1Settings[0] + 10,
                 game1Settings[1] + game1Settings[2] + 60);
+
+        g.drawString("Score: " + grid.score, game1Settings[0] + 10,
+                game1Settings[1] + game1Settings[2] + 90);
 
         // add timer text here when implemented
         g.drawString("Timer: ", game1Settings[0] + 10,
-                game1Settings[1] + game1Settings[2] + 90);
-        
+                game1Settings[1] + game1Settings[2] + 120);
+
         // add stop buttons to indicate person solved puzzle and so timer will stop
 
         // g.drawString("Player: " + player.getUsername(), game2Settings[0] + 10,
