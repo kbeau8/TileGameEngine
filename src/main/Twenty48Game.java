@@ -46,6 +46,7 @@ public class Twenty48Game extends Game implements KeyListener {
         if (currentFrame != null) {
             int newWidth = currentFrame.getWidth() + 400; // Increase width by 100// Increase height by 100
             currentFrame.setSize(newWidth, currentFrame.getHeight() + 200);
+            currentFrame.setLocationRelativeTo(null);
         }
 
     }
