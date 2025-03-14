@@ -79,8 +79,6 @@ public class Twenty48TileMap extends TileMap {
         }
     }
 
-    // fix: right now it only combines tiles that are right next to each other
-    // rather than same tiles that have empty space in between
     public void swipeRight() {
         Twenty48Tile current;
         Twenty48Tile right;
@@ -114,7 +112,7 @@ public class Twenty48TileMap extends TileMap {
 
         // this loop works backwards, idk how to explain it 
         for (int row = 0; row < tiles.length; row++) { // Iterate over rows
-            for (int col = 2; col >= 0; col--) { // Iterate over columns backwards, skip the first one
+            for (int col = 2; col >= 0; col--) { // Iterateover columns backwards, skip the first one
                 current = tiles[row][col];
                 right = tiles[row][col + 1];
 
