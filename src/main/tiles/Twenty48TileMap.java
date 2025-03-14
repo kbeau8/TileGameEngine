@@ -79,6 +79,8 @@ public class Twenty48TileMap extends TileMap {
         }
     }
 
+    // right direction
+
     public void swipeRight() {
         Twenty48Tile current;
         Twenty48Tile right;
@@ -110,7 +112,7 @@ public class Twenty48TileMap extends TileMap {
         Twenty48Tile current;
         Twenty48Tile right;
 
-        // this loop works backwards, idk how to explain it 
+        // this loop works backwards, idk how to explain it
         for (int row = 0; row < tiles.length; row++) { // Iterate over rows
             for (int col = 2; col >= 0; col--) { // Iterateover columns backwards, skip the first one
                 current = tiles[row][col];
@@ -139,6 +141,214 @@ public class Twenty48TileMap extends TileMap {
                 } else {
                     if (right.isEmpty()) {
                         right.updateValue(current.getValue());
+                        current.makeEmpty();
+                    }
+                }
+
+            }
+        }
+
+    }
+
+    // left direction
+    public void swipeLeft() {
+        Twenty48Tile current;
+        Twenty48Tile left;
+
+        this.smooshLeft();
+        for (int row = 0; row < tiles.length; row++) {
+            for (int col = 1; col < 4; col++) {
+                current = tiles[row][col];
+                left = tiles[row][col - 1];
+                if (current.isEmpty()) {
+                    continue;
+                } else {
+                    // combine same tiles and update score
+                    if (left.isNotEmpty()) {
+                        this.combineTiles(left, current);
+                    } else {
+                        continue;
+                    }
+                }
+            }
+        }
+
+        this.smooshLeft();
+        // TODO: need to move this because rn it adds a tile even when nothing is moved
+        this.addTile();
+
+    }
+
+    public void smooshLeft() {
+        Twenty48Tile current;
+        Twenty48Tile left;
+
+        for (int row = 0; row < tiles.length; row++) {
+            for (int col = 1; col < 4; col++) {
+                current = tiles[row][col];
+                left = tiles[row][col - 1];
+
+                if (current.isEmpty()) {
+                    continue;
+                } else {
+                    if (left.isEmpty()) {
+                        left.updateValue(current.getValue());
+                        current.makeEmpty();
+                    }
+                }
+
+            }
+        }
+
+        // this loop works forward to get rid of more gaps
+        for (int row = 0; row < tiles.length; row++) {
+            for (int col = 3; col > 0; col--) {
+                current = tiles[row][col];
+                left = tiles[row][col - 1];
+
+                if (current.isEmpty()) {
+                    continue;
+                } else {
+                    if (left.isEmpty()) {
+                        left.updateValue(current.getValue());
+                        current.makeEmpty();
+                    }
+                }
+
+            }
+        }
+
+    }
+
+    // up direction
+    public void swipeUp() {
+        Twenty48Tile current;
+        Twenty48Tile up;
+
+        this.smooshUp();
+        for (int col = 0; col < tiles.length; col++) {
+            for (int row = 1; row < 4; row++) {
+                current = tiles[row][col];
+                up = tiles[row - 1][col];
+                if (current.isEmpty()) {
+                    continue;
+                } else {
+                    // combine same tiles and update score
+                    if (up.isNotEmpty()) {
+                        this.combineTiles(up, current);
+                    } else {
+                        continue;
+                    }
+                }
+            }
+        }
+
+        this.smooshUp();
+        // TODO: need to move this because rn it adds a tile even when nothing is moved
+        this.addTile();
+
+    }
+
+    public void smooshUp() {
+        Twenty48Tile current;
+        Twenty48Tile up;
+
+        for (int col = 0; col < tiles.length; col++) {
+            for (int row = 1; row < 4; row++) {
+                current = tiles[row][col];
+                up = tiles[row - 1][col];
+
+                if (current.isEmpty()) {
+                    continue;
+                } else {
+                    if (up.isEmpty()) {
+                        up.updateValue(current.getValue());
+                        current.makeEmpty();
+                    }
+                }
+
+            }
+        }
+
+        for (int col = 0; col < tiles.length; col++) {
+            for (int row = 3; row > 0; row--) {
+                current = tiles[row][col];
+                up = tiles[row - 1][col];
+
+                if (current.isEmpty()) {
+                    continue;
+                } else {
+                    if (up.isEmpty()) {
+                        up.updateValue(current.getValue());
+                        current.makeEmpty();
+                    }
+                }
+
+            }
+        }
+
+    }
+
+    // down direction
+    public void swipeDown() {
+        Twenty48Tile current;
+        Twenty48Tile down;
+
+        this.smooshDown();
+        for (int col = 0; col < tiles.length; col++) {
+            for (int row = 2; row >= 0; row--) {
+                current = tiles[row][col];
+                down = tiles[row + 1][col];
+                if (current.isEmpty()) {
+                    continue;
+                } else {
+                    // combine same tiles and update score
+                    if (down.isNotEmpty()) {
+                        this.combineTiles(down, current);
+                    } else {
+                        continue;
+                    }
+                }
+            }
+        }
+
+        this.smooshDown();
+        // TODO: need to move this because rn it adds a tile even when nothing is moved
+        this.addTile();
+
+    }
+
+    public void smooshDown() {
+        Twenty48Tile current;
+        Twenty48Tile down;
+
+        for (int col = 0; col < 4; col++) {
+            for (int row = 2; row >= 0; row--) {
+                current = tiles[row][col];
+                down = tiles[row + 1][col];
+
+                if (current.isEmpty()) {
+                    continue;
+                } else {
+                    if (down.isEmpty()) {
+                        down.updateValue(current.getValue());
+                        current.makeEmpty();
+                    }
+                }
+
+            }
+        }
+
+        for (int col = 0; col < tiles.length; col++) {
+            for (int row = 1; row < 3; row++) {
+                current = tiles[row][col];
+                down = tiles[row + 1][col];
+
+                if (current.isEmpty()) {
+                    continue;
+                } else {
+                    if (down.isEmpty()) {
+                        down.updateValue(current.getValue());
                         current.makeEmpty();
                     }
                 }

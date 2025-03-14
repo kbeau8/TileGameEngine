@@ -60,19 +60,19 @@ public class Twenty48Game extends Game implements KeyListener {
         }
 
         if (code == KeyEvent.VK_LEFT) {
-            System.out.println("LEFT!");
+            grid.swipeLeft();
 
         }
 
         if (code == KeyEvent.VK_UP) {
-            System.out.println("UP!");
+            grid.swipeUp();
         }
 
         if (code == KeyEvent.VK_DOWN) {
-            System.out.println("DOWN!");
+            grid.swipeDown();
         }
 
-        // TODO: add key listeners for WASD
+        // TODO: add key listeners for WASD for second player
     }
 
     // these methods are probably not needed but are here just in case
