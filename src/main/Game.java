@@ -1,3 +1,5 @@
+import profiles.PlayerProfile;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -5,11 +7,17 @@ import java.awt.*;
 public abstract class Game extends JPanel implements Runnable {
     protected boolean running = false;
     private Thread gameThread;
+    protected PlayerProfile player;
 
-    public Game() {
-        // Keep set resolution otherwise dumb scaling things
-        setSize(new Dimension(800, 600));
+    public Game(PlayerProfile player) {
+        JFrame frame = new JFrame();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+        frame.setSize(800, 600);
+        frame.setResizable(false);
         setFocusable(true);
+        frame.add(this);
     }
 
     public void start() {
@@ -28,6 +36,7 @@ public abstract class Game extends JPanel implements Runnable {
     }
 
     public abstract void update();
+
     public abstract void render(Graphics2D g);
 
     @Override

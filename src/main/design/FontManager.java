@@ -10,7 +10,7 @@ public class FontManager {
     public static Font getPixelFont(float size) {
         if (pixelFont == null) {
             try {
-                File fontFile = new File("assets/fonts/pixel-font.ttf");
+                File fontFile = new File("assets/fonts/pixel-modern.ttf");
                 pixelFont = Font.createFont(Font.TRUETYPE_FONT, fontFile);
             } catch (IOException | FontFormatException e) {
                 e.printStackTrace();

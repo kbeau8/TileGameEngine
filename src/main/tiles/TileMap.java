@@ -4,7 +4,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class TileMap {
-    private int width, height;
-    private int size;
-    private Tile[][] tiles;
+    protected int width, height;
+    protected int size;
+    protected Tile[][] tiles;
 }
