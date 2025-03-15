@@ -1,4 +1,5 @@
 import profiles.PlayerProfile;
+import design.FontManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,10 +18,13 @@ public class GameSelectionScreen extends JFrame {
         setLayout(new GridLayout(12, 3));
 
         JLabel welcomeLabel = new JLabel("Welcome, " + player.getUsername() + "!", SwingConstants.CENTER);
+        welcomeLabel.setFont(FontManager.getPixelFont(20f));
         add(welcomeLabel);
 
         JButton twenty48Button = new JButton("Play 2048");
         JButton puzzlesAndDragonsButton = new JButton("Play Puzzles & Dragons");
+        twenty48Button.setFont(FontManager.getPixelFont(18f));
+        puzzlesAndDragonsButton.setFont(FontManager.getPixelFont(18f));
 
         twenty48Button.addActionListener(new ActionListener() {
             @Override

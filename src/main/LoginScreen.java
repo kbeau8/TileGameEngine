@@ -1,3 +1,4 @@
+import design.FontManager;
 import profiles.PlayerProfile;
 import profiles.ProfileManager;
 
@@ -10,6 +11,9 @@ public class LoginScreen extends JFrame {
     private JTextField usernameField;
     private JPasswordField passwordField;
     private JButton loginButton, createProfileButton;
+    private JLabel userLabel;
+    private JLabel passLabel;
+    Font customFont = FontManager.getPixelFont(18f);
 
     public LoginScreen() {
         setTitle("WELCOME TO THE TILE GAME HUB");
@@ -20,16 +24,24 @@ public class LoginScreen extends JFrame {
 
         usernameField = new JTextField(20);
         passwordField = new JPasswordField(20);
+        userLabel = new JLabel("Username:");
+        passLabel = new JLabel("Password:");
         loginButton = new JButton("Login");
         createProfileButton = new JButton("Create Profile");
 
-
-        add(new JLabel("Username:"));
+        add(userLabel);
         add(usernameField);
-        add(new JLabel("Password:"));
+        add(passLabel);
         add(passwordField);
         add(loginButton);
         add(createProfileButton);
+
+        loginButton.setFont(customFont);
+        createProfileButton.setFont(customFont);
+        userLabel.setFont(customFont);
+        usernameField.setFont(customFont);
+        passLabel.setFont(customFont);
+        passwordField.setFont(customFont);
 
         loginButton.addActionListener(new ActionListener() {
             @Override
