@@ -11,6 +11,7 @@ import tiles.Twenty48Tile;
 import tiles.Twenty48TileMap;
 import logic.Twenty48GameLogic;
 import profiles.PlayerProfile;
+import design.FontManager;
 
 public class Twenty48Game extends Game implements KeyListener {
     private PlayerProfile player;
@@ -20,6 +21,7 @@ public class Twenty48Game extends Game implements KeyListener {
     public static Image tileBoardImage = new javax.swing.ImageIcon("2048-assets/tile-board.png").getImage();
     public int score;
     private Twenty48GameLogic gameLogic = new Twenty48GameLogic();
+    private GameTimer timer = new GameTimer(100);
     // settings for each game (in order): x position, y position, height/width of
     // the tile board
     private int game1Settings[] = { 6, 5, 440 };
@@ -47,6 +49,7 @@ public class Twenty48Game extends Game implements KeyListener {
             int newWidth = currentFrame.getWidth() + 400; // Increase width by 100// Increase height by 100
             currentFrame.setSize(newWidth, currentFrame.getHeight() + 200);
             currentFrame.setLocationRelativeTo(null);
+            currentFrame.setTitle("2048 Game");
         }
 
     }
@@ -91,6 +94,7 @@ public class Twenty48Game extends Game implements KeyListener {
     public void update() {
         // Implement the update logic for the 2048 game
         this.gameLogic.updateScore(grid.score, player);
+        this.timer.update();
         // add other game logic here
 
     }
@@ -130,6 +134,9 @@ public class Twenty48Game extends Game implements KeyListener {
 
     @Override
     public void render(Graphics2D g) {
+        // custom font
+        g.setFont(FontManager.getPixelFont(24f));
+        g.setColor(Color.BLACK);
         // draws tile board
         g.drawImage(tileBoardImage, game1Settings[0], game1Settings[1], game1Settings[2], game1Settings[2], this);
         // g.drawImage(tileBoardImage, game2Settings[0], game2Settings[1],
@@ -138,13 +145,7 @@ public class Twenty48Game extends Game implements KeyListener {
         // draws tiles
         this.renderTiles(g, grid);
 
-        // game text: title, player, score, etc.
-        g.setColor(Color.BLACK);
-        g.setFont(new Font("Arial", Font.BOLD, 24));
-
         // Draw text at a specific location (x, y)
-        g.drawString("2048 Game", game1Settings[0] + game1Settings[2] + 20, 50);
-
         g.drawString("Player: " + player.getUsername(), game1Settings[0] + 10,
                 game1Settings[1] + game1Settings[2] + 30);
 
@@ -154,8 +155,7 @@ public class Twenty48Game extends Game implements KeyListener {
         g.drawString("Score: " + grid.score, game1Settings[0] + 10,
                 game1Settings[1] + game1Settings[2] + 90);
 
-        // add timer text here when implemented
-        g.drawString("Timer: ", game1Settings[0] + 10,
+        g.drawString("Timer: " + timer.getTimeLeft(), game1Settings[0] + 10,
                 game1Settings[1] + game1Settings[2] + 120);
 
         // add stop buttons to indicate person solved puzzle and so timer will stop
