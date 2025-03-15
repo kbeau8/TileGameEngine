@@ -18,7 +18,7 @@ public class Twenty48Game extends Game implements KeyListener {
     private HashMap<String, String> rules;
     private Twenty48TileMap grid;
     static final String file_path = "../2048-assets";
-    public static Image tileBoardImage = new javax.swing.ImageIcon("2048-assets/tile-board.png").getImage();
+    public static Image tileBoardImage = new javax.swing.ImageIcon("2048-assets-retro/tile-board.png").getImage();
     public int score;
     private Twenty48GameLogic gameLogic = new Twenty48GameLogic();
     private GameTimer timer = new GameTimer(100);
@@ -116,8 +116,8 @@ public class Twenty48Game extends Game implements KeyListener {
         // tile board 1
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
-                x = j * (tileSizeX + gap) + 3 + game1Settings[0];
-                y = i * (tileSizeY + gap) + 7 + game1Settings[1];
+                x = j * (tileSizeX + gap) + 4 + game1Settings[0];
+                y = i * (tileSizeY + gap) + 8 + game1Settings[1];
                 g.drawImage(map.tiles[i][j].image, x, y, this);
             }
         }
