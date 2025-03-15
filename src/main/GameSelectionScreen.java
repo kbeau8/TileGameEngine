@@ -91,7 +91,7 @@ public class GameSelectionScreen extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 soundManager.stopMusic();
                 dispose();
-                // new PADGame(player1, player2);
+                new PADGame(player1);
             }
         });
     }
