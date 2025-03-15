@@ -2,11 +2,12 @@ import java.awt.*;
 import java.awt.event.KeyListener;
 import java.util.HashMap;
 
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 
 import java.awt.event.KeyEvent;
 
+import entities.Player;
+import sounds.SoundManager;
 import tiles.Twenty48Tile;
 import tiles.Twenty48TileMap;
 import logic.Twenty48GameLogic;
@@ -19,9 +20,11 @@ public class Twenty48Game extends Game implements KeyListener {
     private Twenty48TileMap grid;
     static final String file_path = "../2048-assets";
     public static Image tileBoardImage = new javax.swing.ImageIcon("2048-assets-retro/tile-board.png").getImage();
+    private Image backgroundImage = new ImageIcon("assets/backgrounds/twenty48background.jpg").getImage();
     public int score;
     private Twenty48GameLogic gameLogic = new Twenty48GameLogic();
-    private GameTimer timer = new GameTimer(100);
+    private GameTimer timer = new GameTimer(200);
+    private SoundManager soundManager = new SoundManager();
     // settings for each game (in order): x position, y position, height/width of
     // the tile board
     private int game1Settings[] = { 6, 5, 440 };
@@ -30,9 +33,10 @@ public class Twenty48Game extends Game implements KeyListener {
     // todo: take in a game number to keep track of how many games there are and
     // positioning
     public Twenty48Game(PlayerProfile newPlayer) {
-        super();
+        super(newPlayer);
         this.player = newPlayer;
         this.grid = new Twenty48TileMap();
+        soundManager.startMusic("assets/music/twenty48.wav");
         start();
         addKeyListener(this);
         this.score = 0;
@@ -57,6 +61,11 @@ public class Twenty48Game extends Game implements KeyListener {
     // Implement the keyPressed method
     @Override
     public void keyPressed(KeyEvent e) {
+        // Start the timer when a key is pressed
+        if (!timer.isRunning) {
+            timer.startTimer();
+        }
+
         // takes key inputs and does an action for a specific key
         int code = e.getKeyCode();
         if (code == KeyEvent.VK_RIGHT) {
@@ -136,7 +145,9 @@ public class Twenty48Game extends Game implements KeyListener {
     public void render(Graphics2D g) {
         // custom font
         g.setFont(FontManager.getPixelFont(24f));
-        g.setColor(Color.BLACK);
+        g.setColor(Color.WHITE);
+        // custom background
+        g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
         // draws tile board
         g.drawImage(tileBoardImage, game1Settings[0], game1Settings[1], game1Settings[2], game1Settings[2], this);
         // g.drawImage(tileBoardImage, game2Settings[0], game2Settings[1],
