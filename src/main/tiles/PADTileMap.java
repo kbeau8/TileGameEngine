@@ -27,4 +27,10 @@ public class PADTileMap extends TileMap {
       }
     }
   }
+
+  public void swapTiles(int srcX, int srcY, int destX, int destY) {
+    PADTile temp = tiles[srcY][srcX];
+    tiles[srcY][srcX] = tiles[destY][destX];
+    tiles[destY][destX] = temp;
+  }
 }

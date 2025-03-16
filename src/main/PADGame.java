@@ -128,7 +128,28 @@ public class PADGame extends Game implements KeyListener {
 
         if (movingTile) {
             // Swap tiles in direction of movement
-            // TODO
+            switch (code) {
+                case KeyEvent.VK_UP:
+                    if (selected.y == 0) break;
+                    tileMap.swapTiles((int) selected.x, (int) selected.y, (int) selected.x, (int) selected.y - 1);
+                    selected.y--;
+                    break;
+                case KeyEvent.VK_DOWN:
+                    if (selected.y == height - 1) break;
+                    tileMap.swapTiles((int) selected.x, (int) selected.y, (int) selected.x, (int) selected.y + 1);
+                    selected.y++;
+                    break;
+                case KeyEvent.VK_LEFT:
+                    if (selected.x == 0) break;
+                    tileMap.swapTiles((int) selected.x, (int) selected.y, (int) selected.x - 1, (int) selected.y);
+                    selected.x--;
+                    break;
+                case KeyEvent.VK_RIGHT:
+                    if (selected.x == width - 1) break;
+                    tileMap.swapTiles((int) selected.x, (int) selected.y, (int) selected.x + 1, (int) selected.y);
+                    selected.x++;
+                    break;
+            }
         } else {
             // Move selection location
             switch (code) {
