@@ -1,3 +1,4 @@
+megan,megan,0
 test,test,0
 alice,1234,0
 meg,w,0
