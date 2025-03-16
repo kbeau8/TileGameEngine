@@ -18,17 +18,17 @@ public class Twenty48GameLogic extends GameLogic {
         return true;
     }
 
+    // todo: redo this with tilemap score
     public void updateScore(int score, PlayerProfile player) {
         // update player's high score if higher
         if (score > player.getHighScore("2048")) {
             player.updateHighScore("2048", score);
         }
-        // update actual game score
     }
 
-    // unsure about how to use this method - AT
-    public int getScore(int score) {
-        return score;
+    // unsure about how to use this method and not sure if it's needed - AT
+    public int getScore(Twenty48TileMap tilemap) {
+        return tilemap.score;
     }
 
     // UNUSED FUNCTIONS

@@ -5,7 +5,7 @@ import java.awt.*;
 
 class Twenty48TileImages {
     static final HashMap<Integer, Image> imageMap = new HashMap<>();
-    static final String file_path = "2048-assets/";
+    static final String file_path = "2048-assets-retro/";
 
     static {
         Image image = new javax.swing.ImageIcon(file_path + "tile-blank.png").getImage();

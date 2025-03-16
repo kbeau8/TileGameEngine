@@ -46,5 +46,5 @@ GameSelectionScreen - After logging in this contains the selection of games
 GameState - Updates the game state after every tick (moves game forward)
 LoginScreen - Starting screen to select a player profile
 Renderer - Graphics driver for tiles
-Timer - Implemented for turn-based and live competitive games
+GameTimer - Implemented for turn-based and live competitive games
 Vector2D - Handles movement and physics for player/objects
