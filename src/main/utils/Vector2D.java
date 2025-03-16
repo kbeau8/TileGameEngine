@@ -1,12 +1,14 @@
+package utils;
+
 public class Vector2D {
-    public double x, y;
+    public int x, y;
 
     public Vector2D() {
         this.x = 0;
         this.y = 0;
     }
 
-    public Vector2D(double x, double y) {
+    public Vector2D(int x, int y) {
         this.x = x;
         this.y = y;
     }
@@ -19,7 +21,7 @@ public class Vector2D {
         return new Vector2D(this.x - other.x, this.y - other.y);
     }
 
-    public Vector2D multiply(double scalar) {
+    public Vector2D multiply(int scalar) {
         return new Vector2D(this.x * scalar, this.y * scalar);
     }
 

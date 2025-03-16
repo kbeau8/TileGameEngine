@@ -3,6 +3,8 @@ import logic.PADGameLogic;
 import profiles.PlayerProfile;
 import tiles.PADTile;
 import tiles.PADTileMap;
+import utils.Vector2D;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -62,8 +64,8 @@ public class PADGame extends Game implements KeyListener {
         g.setColor(Color.WHITE);
 
         // Selected Tile Highlight
-        g.setColor(Color.LIGHT_GRAY);
-        g.fillRect((int) selected.x * tileSize, (int) selected.y * tileSize, tileSize, tileSize);
+        g.setColor(movingTile ? Color.getHSBColor(142, 23, 100) : Color.LIGHT_GRAY);
+        g.fillRect(selected.x * tileSize, selected.y * tileSize, tileSize, tileSize);
 
         // Tiles
         for (int y = 0; y < height; ++y) {
@@ -131,22 +133,22 @@ public class PADGame extends Game implements KeyListener {
             switch (code) {
                 case KeyEvent.VK_UP:
                     if (selected.y == 0) break;
-                    tileMap.swapTiles((int) selected.x, (int) selected.y, (int) selected.x, (int) selected.y - 1);
+                    tileMap.swapTiles(selected.x, selected.y, selected.x, selected.y - 1);
                     selected.y--;
                     break;
                 case KeyEvent.VK_DOWN:
                     if (selected.y == height - 1) break;
-                    tileMap.swapTiles((int) selected.x, (int) selected.y, (int) selected.x, (int) selected.y + 1);
+                    tileMap.swapTiles(selected.x, selected.y, selected.x, selected.y + 1);
                     selected.y++;
                     break;
                 case KeyEvent.VK_LEFT:
                     if (selected.x == 0) break;
-                    tileMap.swapTiles((int) selected.x, (int) selected.y, (int) selected.x - 1, (int) selected.y);
+                    tileMap.swapTiles(selected.x, selected.y, selected.x - 1, selected.y);
                     selected.x--;
                     break;
                 case KeyEvent.VK_RIGHT:
                     if (selected.x == width - 1) break;
-                    tileMap.swapTiles((int) selected.x, (int) selected.y, (int) selected.x + 1, (int) selected.y);
+                    tileMap.swapTiles(selected.x, selected.y, selected.x + 1, selected.y);
                     selected.x++;
                     break;
             }

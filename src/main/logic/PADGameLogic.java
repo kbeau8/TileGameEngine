@@ -1,5 +1,10 @@
 package logic;
 
+import tiles.PADTileMap;
+import utils.Vector2D;
+
+import java.util.HashSet;
+
 public class PADGameLogic extends GameLogic {
   @Override
   public void checkWinConditions() {
@@ -20,5 +25,9 @@ public class PADGameLogic extends GameLogic {
   @Override
   public void getScore() {
     // TODO
+  }
+
+  public HashSet<Vector2D> getMatches(PADTileMap tileMap) {
+    return null;
   }
 }
