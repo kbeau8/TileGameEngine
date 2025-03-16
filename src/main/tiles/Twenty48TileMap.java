@@ -16,7 +16,7 @@ public class Twenty48TileMap extends TileMap {
         this.height = 4;
         this.width = 4;
         this.score = 0;
-        initializeStartMap();
+        initializeNormalCondition();
         //initializeWinCondition();
         //initializeLoseCondition();
     }
@@ -57,7 +57,7 @@ public class Twenty48TileMap extends TileMap {
         this.addTile();
     }
 
-    private void initializeStartMap() {
+    private void initializeNormalCondition() {
         initializeBlankTiles();
         addStartTiles();
     }
