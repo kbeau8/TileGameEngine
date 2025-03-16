@@ -25,6 +25,8 @@ public class Twenty48Game extends Game implements KeyListener {
     private Twenty48GameLogic gameLogic = new Twenty48GameLogic();
     private GameTimer timer = new GameTimer(200);
     private SoundManager soundManager = new SoundManager();
+    private int time_started;
+
     // settings for each game (in order): x position, y position, height/width of
     // the tile board
     private int game1Settings[] = { 6, 5, 440 };
@@ -64,6 +66,7 @@ public class Twenty48Game extends Game implements KeyListener {
         // Start the timer when a key is pressed
         if (!timer.isRunning) {
             timer.startTimer();
+            this.time_started = timer.getTimeLeft();
         }
 
         // takes key inputs and does an action for a specific key
@@ -104,8 +107,16 @@ public class Twenty48Game extends Game implements KeyListener {
         // Implement the update logic for the 2048 game
         this.gameLogic.updateScore(grid.score, player);
         this.timer.update();
-        // add other game logic here
-
+        if(timer.isRunning && this.gameLogic.isGameWon(grid)){
+            int score = timer.getTimeLeft() - this.time_started;
+            JOptionPane.showMessageDialog(this, "You won! Your score was: " + score);
+            this.running = false;
+            this.player.updateHighScore("2048", score);
+        }
+        else if(timer.isRunning && this.gameLogic.isGameLost(grid)){
+            JOptionPane.showMessageDialog(this, "You lost!");
+            this.running = false;
+        }
     }
 
     public void renderTiles(Graphics2D g, Twenty48TileMap map) {

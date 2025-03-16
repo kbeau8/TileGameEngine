@@ -5,12 +5,16 @@ import profiles.PlayerProfile;
 
 public class Twenty48GameLogic extends GameLogic {
     public void checkWinConditions(Twenty48TileMap tilemap) {
-        if (tilemap.is2048()) {
-            // do win condition
-        }
     }
 
-    public boolean isGameOver(Twenty48TileMap tilemap) {
+    public boolean isGameWon(Twenty48TileMap tilemap){
+        if (tilemap.is2048()) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isGameLost(Twenty48TileMap tilemap) {
         // no empty space on board AND no tiles to combine
         if (tilemap.isEmptySpace()) {
             return false;

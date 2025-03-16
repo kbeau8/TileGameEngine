@@ -16,7 +16,29 @@ public class Twenty48TileMap extends TileMap {
         this.height = 4;
         this.width = 4;
         this.score = 0;
+        initializeStartMap();
+        //initializeWinCondition();
+        //initializeLoseCondition();
+    }
+
+    private void initializeWinCondition() {
         initializeBlankTiles();
+        this.tiles[0][0] = new Twenty48Tile(1024, 0,0);
+        this.tiles[0][1] = new Twenty48Tile(1024, 0,1);
+    }
+
+    private void initializeLoseCondition() {
+        initializeBlankTiles();
+        for (int i = 0; i < this.height; ++i) {
+            for (int j = 0; j < this.width; ++j) {
+                if((i + j) % 2 == 0){
+                    this.tiles[i][j] = new Twenty48Tile(2, i, j);
+                }
+                else{
+                    this.tiles[i][j] = new Twenty48Tile(4, i, j);
+                }
+            }
+        }
     }
 
     private void initializeBlankTiles() {
@@ -27,11 +49,17 @@ public class Twenty48TileMap extends TileMap {
                 this.tiles[i][j] = new Twenty48Tile(0, i, j);
             }
         }
+    }
 
+    private void addStartTiles() {
         // adds two starting tiles
         this.addTile();
         this.addTile();
+    }
 
+    private void initializeStartMap() {
+        initializeBlankTiles();
+        addStartTiles();
     }
 
     public boolean isEmptySpace() {
