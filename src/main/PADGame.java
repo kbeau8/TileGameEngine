@@ -59,9 +59,11 @@ public class PADGame extends Game implements KeyListener {
     public void render(Graphics2D g) {
         g.drawImage(backgroundImage, 0, 0, null);
 
-        // TODO: Text boxes
         g.setFont(FontManager.getPixelFont(24f));
-        g.setColor(Color.WHITE);
+        g.setColor(Color.BLACK);
+
+        g.drawString("Score: " + score, 20, 530);
+        g.drawString("Timer: " + timer.getTimeLeft(), 20, 560);
 
         // Selected Tile Highlight
         g.setColor(movingTile ? Color.getHSBColor(142, 23, 100) : Color.LIGHT_GRAY);
@@ -91,7 +93,7 @@ public class PADGame extends Game implements KeyListener {
                 HashSet<Vector2D> removals = gameLogic.getMatches(tileMap);
                 tileMap.plop(removals);
 
-                // TODO: Add points for removed tiles
+                score += removals.size();
             }
             movingTile = !movingTile;
         }

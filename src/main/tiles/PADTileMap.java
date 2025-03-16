@@ -44,7 +44,24 @@ public class PADTileMap extends TileMap {
       // Remove matches found
       for (Vector2D v : removals) tiles[v.y][v.x] = null;
 
-      // Drop in new tiles from the top
-      // TODO
+      // Shift down to fill empty space
+      for (int x = 0; x < width; ++x) {
+          int nullSpaces = 0;
+
+          for (int y = height - 1; y >= 0; --y) {
+              if (tiles[y][x] == null) nullSpaces++;
+              else if (nullSpaces > 0) {
+                  tiles[y + nullSpaces][x] = tiles[y][x];
+                  tiles[y][x] = null;
+              }
+          }
+      }
+
+      // Fill empty spaces
+      for (int y = 0; y < height; ++y) {
+          for (int x = 0; x < width; ++x) {
+              if (tiles[y][x] == null) tiles[y][x] = new PADTile(getRandomTile(), x, y);
+          }
+      }
   }
 }
