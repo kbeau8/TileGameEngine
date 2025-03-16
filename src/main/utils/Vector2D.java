@@ -1,6 +1,6 @@
 package utils;
 
-public class Vector2D {
+public class Vector2D implements java.io.Serializable {
     public int x, y;
 
     public Vector2D() {

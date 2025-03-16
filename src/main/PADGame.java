@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.HashSet;
 
 public class PADGame extends Game implements KeyListener {
     private PlayerProfile player;
@@ -56,7 +57,6 @@ public class PADGame extends Game implements KeyListener {
 
     @Override
     public void render(Graphics2D g) {
-        // TODO: Background image
         g.drawImage(backgroundImage, 0, 0, null);
 
         // TODO: Text boxes
@@ -80,53 +80,21 @@ public class PADGame extends Game implements KeyListener {
         }
     }
 
-//    private void checkMatches() {
-//        Set<BoardPos> removeSet = new HashSet<>();
-//        for (int r = 0; r < row; r++) {
-//            for (int c = 0; c < col; c++) {
-//                int tile = board[r][c];
-//                if (tile < 0) continue;
-//                if (c + 2 < col && board[r][c + 1] == tile && board[r][c + 2] == tile) {
-//                    removeSet.add(new BoardPos(r, c));
-//                    removeSet.add(new BoardPos(r, c + 1));
-//                    removeSet.add(new BoardPos(r, c + 2));
-//                }
-//                if (r + 2 < row && board[r + 1][c] == tile && board[r + 2][c] == tile) {
-//                    removeSet.add(new BoardPos(r, c));
-//                    removeSet.add(new BoardPos(r + 1, c));
-//                    removeSet.add(new BoardPos(r + 2, c));
-//                }
-//                if (r + 2 < row && c + 2 < col && board[r + 1][c + 1] == tile && board[r + 2][c + 2] == tile) {
-//                    removeSet.add(new BoardPos(r, c));
-//                    removeSet.add(new BoardPos(r + 1, c + 1));
-//                    removeSet.add(new BoardPos(r + 2, c + 2));
-//                }
-//                if (r + 2 < row && c - 2 >= 0 && board[r + 1][c - 1] == tile && board[r + 2][c - 2] == tile) {
-//                    removeSet.add(new BoardPos(r, c));
-//                    removeSet.add(new BoardPos(r + 1, c - 1));
-//                    removeSet.add(new BoardPos(r + 2, c - 2));
-//                }
-//            }
-//        }
-//        if (!removeSet.isEmpty()) {
-//            for (BoardPos pos : removeSet) {
-//                board[pos.row][pos.col] = -1;
-//            }
-//            points += removeSet.size();
-//            for (BoardPos pos : removeSet) {
-//                board[pos.row][pos.col] = random.nextInt(3);
-//            }
-//        }
-//    }
-
     @Override
     public void keyPressed(KeyEvent e) {
         if (!timer.isRunning) timer.startTimer();
 
         int code = e.getKeyCode();
 
-        if (code == KeyEvent.VK_ENTER)
+        if (code == KeyEvent.VK_ENTER) {
+            if (movingTile) {
+                HashSet<Vector2D> removals = gameLogic.getMatches(tileMap);
+                tileMap.plop(removals);
+
+                // TODO: Add points for removed tiles
+            }
             movingTile = !movingTile;
+        }
 
         if (movingTile) {
             // Swap tiles in direction of movement

@@ -1,5 +1,9 @@
 package tiles;
 
+import utils.Vector2D;
+
+import java.util.HashSet;
+
 public class PADTileMap extends TileMap {
   public PADTile[][] tiles;
 
@@ -32,5 +36,15 @@ public class PADTileMap extends TileMap {
     PADTile temp = tiles[srcY][srcX];
     tiles[srcY][srcX] = tiles[destY][destX];
     tiles[destY][destX] = temp;
+  }
+
+  public void plop(HashSet<Vector2D> removals) {
+      System.out.println("Plopping " + removals.size() + " tiles");
+
+      // Remove matches found
+      for (Vector2D v : removals) tiles[v.y][v.x] = null;
+
+      // Drop in new tiles from the top
+      // TODO
   }
 }
