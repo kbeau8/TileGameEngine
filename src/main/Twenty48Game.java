@@ -69,11 +69,11 @@ public class Twenty48Game extends Game implements KeyListener {
         rules.put("Introduction",
                 "2048's objective is to slide numbered tiles on a grid to combine them to create a tile with the number 2048."
                         + "\n"
-                        + "The game is won when a tile with the number 2048 appears on the board. The player's time is their score. The game is lost when the player has no legal moves left.");
+                        + "The game is won when a tile with the number 2048 appears on the board. A second player can be added and the times can be compared to see who finished the game first.\nThe game is lost when the player has no legal moves left.");
         rules.put("Controls",
                 "Use the arrow keys to move the tiles in the desired direction. The tiles will move in the direction of the arrow key until they hit the edge of the board or another tile."
                         + "\n"
-                        + "When two tiles with the same number touch, they merge into one tile with the sum of the two tiles");
+                        + "When two tiles with the same number touch, they merge into one tile with the sum of the two tiles\nStop the timer only when you have won the game.");
     }
 
     // Implement the keyPressed method
@@ -179,6 +179,19 @@ public class Twenty48Game extends Game implements KeyListener {
 
         // draws tiles
         this.renderTiles(g, grid);
+
+        // stop timer button
+        JButton stopTimerButton = new JButton("Stop Timer");
+        stopTimerButton.setBounds(250, 500, 120, 40);
+        this.add(stopTimerButton);
+        stopTimerButton.setBackground(Color.decode("#E74250"));
+        stopTimerButton.setForeground(Color.WHITE);
+        stopTimerButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                timer.stopTimer();
+            }
+        });
 
         // Draw text at a specific location (x, y)
         g.drawString("Player: " + player.getUsername(), game1Settings[0] + 10,
