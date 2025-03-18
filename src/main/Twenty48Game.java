@@ -4,6 +4,8 @@ import java.util.HashMap;
 
 import javax.swing.*;
 
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
 import entities.Player;
@@ -21,18 +23,15 @@ public class Twenty48Game extends Game implements KeyListener {
     static final String file_path = "../2048-assets";
     public static Image tileBoardImage = new javax.swing.ImageIcon("2048-assets-retro/tile-board.png").getImage();
     private Image backgroundImage = new ImageIcon("assets/backgrounds/twenty48background.jpg").getImage();
-    public int score;
     private Twenty48GameLogic gameLogic = new Twenty48GameLogic();
     private Twenty48GameTimer timer = new Twenty48GameTimer(0);
     private SoundManager soundManager = new SoundManager();
+    private JFrame currentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
 
     // settings for each game (in order): x position, y position, height/width of
     // the tile board
     private int game1Settings[] = { 6, 5, 440 };
     // private int game2Settings[] = { 600, 5, 440 };
-
-    // todo: take in a game number to keep track of how many games there are and
-    // positioning
 
     public Twenty48Game(PlayerProfile newPlayer) {
         super(newPlayer);
@@ -42,16 +41,13 @@ public class Twenty48Game extends Game implements KeyListener {
         soundManager.startMusic("assets/music/twenty48.wav");
         start();
         addKeyListener(this);
-        this.score = 0;
-        // do player stuff here when game is initialized
+
         player.incrementGamesPlayed();
         if (player.getAllHighScores().get("2048") == null) {
-            player.getAllHighScores().put("2048", score);
+            player.getAllHighScores().put("2048", 0);
         }
 
         // increases screen size, needed for when there are 2 players
-        JFrame currentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
-
         if (currentFrame != null) {
             int newWidth = currentFrame.getWidth() + 400; // Increase width by 100// Increase height by 100
             currentFrame.setSize(newWidth, currentFrame.getHeight() + 200);
@@ -64,13 +60,20 @@ public class Twenty48Game extends Game implements KeyListener {
     }
 
     public void showRules() {
-        JOptionPane.showMessageDialog(this, "Rules:" + "\n" + rules.get("Introduction") + "\n" + "Controls:" + "\n" + rules.get("Controls"));
+        JOptionPane.showMessageDialog(null,
+                "Rules:" + "\n" + rules.get("Introduction") + "\n" + "Controls:" + "\n" + rules.get("Controls"));
     }
 
     public void setRules() {
         rules = new HashMap<String, String>();
-        rules.put("Introduction", "2048's objective is to slide numbered tiles on a grid to combine them to create a tile with the number 2048." + "\n" + "The game is won when a tile with the number 2048 appears on the board. The player's time is their score. The game is lost when the player has no legal moves left.");
-        rules.put("Controls", "Use the arrow keys to move the tiles in the desired direction. The tiles will move in the direction of the arrow key until they hit the edge of the board or another tile." + "\n" + "When two tiles with the same number touch, they merge into one tile with the sum of the two tiles");
+        rules.put("Introduction",
+                "2048's objective is to slide numbered tiles on a grid to combine them to create a tile with the number 2048."
+                        + "\n"
+                        + "The game is won when a tile with the number 2048 appears on the board. The player's time is their score. The game is lost when the player has no legal moves left.");
+        rules.put("Controls",
+                "Use the arrow keys to move the tiles in the desired direction. The tiles will move in the direction of the arrow key until they hit the edge of the board or another tile."
+                        + "\n"
+                        + "When two tiles with the same number touch, they merge into one tile with the sum of the two tiles");
     }
 
     // Implement the keyPressed method
@@ -104,29 +107,27 @@ public class Twenty48Game extends Game implements KeyListener {
     }
 
     // these methods are probably not needed but are here just in case
-    // Implement the keyReleased method
     @Override
     public void keyReleased(KeyEvent e) {
     }
 
-    // Implement the keyTyped method
     @Override
     public void keyTyped(KeyEvent e) {
     }
 
     @Override
     public void update() {
-        // Implement the update logic for the 2048 game
-        this.gameLogic.updateScore(grid.score, player);
+        gameLogic.updateScore(grid.score, player);
         this.timer.update();
-        if(timer.isRunning && this.gameLogic.isGameWon(grid)){
-            int score = timer.getTimeElapsed();
-            JOptionPane.showMessageDialog(this, "You won! Your score was: " + score);
+        if (timer.isRunning && this.gameLogic.isGameWon(grid)) {
+            int time = timer.getTimeElapsed();
+            repaint();
+            JOptionPane.showMessageDialog(this,
+                    player.getUsername() + " won! Score: " + gameLogic.getScore(grid) + " Time: " + time);
             this.running = false;
-            this.player.updateHighScore("2048", score);
-        }
-        else if(timer.isRunning && this.gameLogic.isGameLost(grid)){
-            JOptionPane.showMessageDialog(this, "You lost!");
+        } else if (timer.isRunning && this.gameLogic.isGameLost(grid)) {
+            repaint();
+            JOptionPane.showMessageDialog(this, player.getUsername() + " lost! Score: " + gameLogic.getScore(grid));
             this.running = false;
         }
     }
@@ -157,8 +158,8 @@ public class Twenty48Game extends Game implements KeyListener {
         // tile board 2
         // for (int i = 0; i < 4; i++) {
         // for (int j = 0; j < 4; j++) {
-        // x = j * (tileSizeX + gap) + 3 + game2Settings[0];
-        // y = i * (tileSizeY + gap) + 7 + game2Settings[1];
+        // x = j * (tileSizeX + gap) + 4 + game2Settings[0];
+        // y = i * (tileSizeY + gap) + 8 + game2Settings[1];
         // g.drawImage(map.tiles[i][j].image, x, y, this);
         // }
         // }
@@ -191,6 +192,22 @@ public class Twenty48Game extends Game implements KeyListener {
 
         g.drawString("Timer: " + timer.getTimeElapsed(), game1Settings[0] + 10,
                 game1Settings[1] + game1Settings[2] + 120);
+
+        // player goes back to game selection
+        JButton exitButton = new JButton("Back to Main");
+        exitButton.setBounds(465, 100, 120, 40);
+        this.add(exitButton);
+        exitButton.setBackground(Color.decode("#E74250"));
+        exitButton.setForeground(Color.WHITE);
+
+        exitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                running = false;
+                currentFrame.dispose();
+                new GameSelectionScreen(player);
+            }
+        });
 
         // add stop buttons to indicate person solved puzzle and so timer will stop
 
