@@ -54,16 +54,22 @@ public class GameSelectionScreen extends JFrame {
 
         JButton twenty48Button = new JButton("Play 2048");
         JButton puzzlesAndDragonsButton = new JButton("Play Puzzles & Dragons");
+        JButton viewHighScoresButton = new JButton("View High Scores");
         twenty48Button.setFont(customFont);
         twenty48Button.setForeground(Color.WHITE);
         twenty48Button.setBackground(Color.decode("#2b58f2"));
         puzzlesAndDragonsButton.setFont(customFont);
         puzzlesAndDragonsButton.setForeground(Color.WHITE);
         puzzlesAndDragonsButton.setBackground(Color.decode("#2b58f2"));
+        viewHighScoresButton.setFont(customFont);
+        viewHighScoresButton.setForeground(Color.WHITE);
+        viewHighScoresButton.setBackground(Color.decode("#2b58f2"));
 
         buttonContainer.add(twenty48Button);
         buttonContainer.add(Box.createVerticalStrut(10));
         buttonContainer.add(puzzlesAndDragonsButton);
+        buttonContainer.add(Box.createVerticalStrut(10));
+        buttonContainer.add(viewHighScoresButton);
         buttonPanel.add(buttonContainer);
         backgroundPanel.add(buttonPanel);
         backgroundPanel.add(Box.createVerticalGlue());
@@ -92,6 +98,13 @@ public class GameSelectionScreen extends JFrame {
                 soundManager.stopMusic();
                 dispose();
                 // new PADGame(player1, player2);
+            }
+        });
+
+        viewHighScoresButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(GameSelectionScreen.this, player1.getUsername() + "'s High Scores:\n" + player1.getHighScores());
             }
         });
     }

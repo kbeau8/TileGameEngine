@@ -16,7 +16,28 @@ public class Twenty48TileMap extends TileMap {
         this.height = 4;
         this.width = 4;
         this.score = 0;
+        initializeNormalCondition();
+        // initializeWinCondition();
+        // initializeLoseCondition();
+    }
+
+    private void initializeWinCondition() {
         initializeBlankTiles();
+        this.tiles[0][0] = new Twenty48Tile(1024, 0, 0);
+        this.tiles[0][1] = new Twenty48Tile(1024, 0, 1);
+    }
+
+    private void initializeLoseCondition() {
+        initializeBlankTiles();
+        for (int i = 0; i < this.height; ++i) {
+            for (int j = 0; j < this.width; ++j) {
+                if ((i + j) % 2 == 0) {
+                    this.tiles[i][j] = new Twenty48Tile(2, i, j);
+                } else {
+                    this.tiles[i][j] = new Twenty48Tile(4, i, j);
+                }
+            }
+        }
     }
 
     private void initializeBlankTiles() {
@@ -27,11 +48,17 @@ public class Twenty48TileMap extends TileMap {
                 this.tiles[i][j] = new Twenty48Tile(0, i, j);
             }
         }
+    }
 
+    private void addStartTiles() {
         // adds two starting tiles
         this.addTile();
         this.addTile();
+    }
 
+    private void initializeNormalCondition() {
+        initializeBlankTiles();
+        addStartTiles();
     }
 
     public boolean isEmptySpace() {
@@ -69,23 +96,28 @@ public class Twenty48TileMap extends TileMap {
         }
     }
 
-    public void combineTiles(Twenty48Tile tile1, Twenty48Tile tile2) {
+    public boolean combineTiles(Twenty48Tile tile1, Twenty48Tile tile2) {
         // tile1 stays and tile2 dissapears
         if (tile1.value == tile2.value) {
             int newValue = tile1.value * 2;
             tile1.updateValue(newValue);
             tile2.makeEmpty();
             this.score += newValue;
+            return true;
         }
+        return false;
     }
 
     // right direction
 
     public void swipeRight() {
+        // can swipe right if empty space to the right of a tile or if two tiles can
+        // combine
         Twenty48Tile current;
         Twenty48Tile right;
+        boolean combined_any_tiles = false;
 
-        this.smooshRight();
+        boolean smoosh_completed = this.smooshRight();
         for (int row = 0; row < tiles.length; row++) { // Iterate over rows
             for (int col = 2; col >= 0; col--) { // Iterate over columns backwards, skip the first one
                 current = tiles[row][col];
@@ -95,7 +127,9 @@ public class Twenty48TileMap extends TileMap {
                 } else {
                     // combine same tiles and update score
                     if (right.isNotEmpty()) {
-                        this.combineTiles(right, current);
+                        if (this.combineTiles(right, current)) {
+                            combined_any_tiles = true;
+                        }
                     } else {
                         continue;
                     }
@@ -104,13 +138,15 @@ public class Twenty48TileMap extends TileMap {
         }
 
         this.smooshRight();
-        this.addTile();
-
+        if (smoosh_completed || combined_any_tiles) {
+            this.addTile();
+        }
     }
 
-    public void smooshRight() {
+    public boolean smooshRight() {
         Twenty48Tile current;
         Twenty48Tile right;
+        boolean smoosh_completed = false;
 
         // this loop works backwards, idk how to explain it
         for (int row = 0; row < tiles.length; row++) { // Iterate over rows
@@ -124,6 +160,7 @@ public class Twenty48TileMap extends TileMap {
                     if (right.isEmpty()) {
                         right.updateValue(current.getValue());
                         current.makeEmpty();
+                        smoosh_completed = true;
                     }
                 }
 
@@ -142,20 +179,22 @@ public class Twenty48TileMap extends TileMap {
                     if (right.isEmpty()) {
                         right.updateValue(current.getValue());
                         current.makeEmpty();
+                        smoosh_completed = true;
                     }
                 }
 
             }
         }
-
+        return smoosh_completed;
     }
 
     // left direction
     public void swipeLeft() {
         Twenty48Tile current;
         Twenty48Tile left;
+        boolean combined_any_tiles = false;
 
-        this.smooshLeft();
+        boolean smoosh_completed = this.smooshLeft();
         for (int row = 0; row < tiles.length; row++) {
             for (int col = 1; col < 4; col++) {
                 current = tiles[row][col];
@@ -165,7 +204,9 @@ public class Twenty48TileMap extends TileMap {
                 } else {
                     // combine same tiles and update score
                     if (left.isNotEmpty()) {
-                        this.combineTiles(left, current);
+                        if (this.combineTiles(left, current)) {
+                            combined_any_tiles = true;
+                        }
                     } else {
                         continue;
                     }
@@ -174,14 +215,15 @@ public class Twenty48TileMap extends TileMap {
         }
 
         this.smooshLeft();
-        // TODO: need to move this because rn it adds a tile even when nothing is moved
-        this.addTile();
-
+        if (smoosh_completed || combined_any_tiles) {
+            this.addTile();
+        }
     }
 
-    public void smooshLeft() {
+    public boolean smooshLeft() {
         Twenty48Tile current;
         Twenty48Tile left;
+        boolean smoosh_completed = false;
 
         for (int row = 0; row < tiles.length; row++) {
             for (int col = 1; col < 4; col++) {
@@ -194,6 +236,7 @@ public class Twenty48TileMap extends TileMap {
                     if (left.isEmpty()) {
                         left.updateValue(current.getValue());
                         current.makeEmpty();
+                        smoosh_completed = true;
                     }
                 }
 
@@ -212,20 +255,22 @@ public class Twenty48TileMap extends TileMap {
                     if (left.isEmpty()) {
                         left.updateValue(current.getValue());
                         current.makeEmpty();
+                        smoosh_completed = true;
                     }
                 }
 
             }
         }
-
+        return smoosh_completed;
     }
 
     // up direction
     public void swipeUp() {
         Twenty48Tile current;
         Twenty48Tile up;
+        boolean combined_any_tiles = false;
 
-        this.smooshUp();
+        boolean smoosh_completed = this.smooshUp();
         for (int col = 0; col < tiles.length; col++) {
             for (int row = 1; row < 4; row++) {
                 current = tiles[row][col];
@@ -235,7 +280,9 @@ public class Twenty48TileMap extends TileMap {
                 } else {
                     // combine same tiles and update score
                     if (up.isNotEmpty()) {
-                        this.combineTiles(up, current);
+                        if (this.combineTiles(up, current)) {
+                            combined_any_tiles = true;
+                        }
                     } else {
                         continue;
                     }
@@ -244,14 +291,15 @@ public class Twenty48TileMap extends TileMap {
         }
 
         this.smooshUp();
-        // TODO: need to move this because rn it adds a tile even when nothing is moved
-        this.addTile();
-
+        if (smoosh_completed || combined_any_tiles) {
+            this.addTile();
+        }
     }
 
-    public void smooshUp() {
+    public boolean smooshUp() {
         Twenty48Tile current;
         Twenty48Tile up;
+        boolean smoosh_completed = false;
 
         for (int col = 0; col < tiles.length; col++) {
             for (int row = 1; row < 4; row++) {
@@ -264,6 +312,7 @@ public class Twenty48TileMap extends TileMap {
                     if (up.isEmpty()) {
                         up.updateValue(current.getValue());
                         current.makeEmpty();
+                        smoosh_completed = true;
                     }
                 }
 
@@ -281,20 +330,22 @@ public class Twenty48TileMap extends TileMap {
                     if (up.isEmpty()) {
                         up.updateValue(current.getValue());
                         current.makeEmpty();
+                        smoosh_completed = true;
                     }
                 }
 
             }
         }
-
+        return smoosh_completed;
     }
 
     // down direction
     public void swipeDown() {
         Twenty48Tile current;
         Twenty48Tile down;
+        boolean combined_any_tiles = false;
 
-        this.smooshDown();
+        boolean smoosh_completed = this.smooshDown();
         for (int col = 0; col < tiles.length; col++) {
             for (int row = 2; row >= 0; row--) {
                 current = tiles[row][col];
@@ -304,7 +355,9 @@ public class Twenty48TileMap extends TileMap {
                 } else {
                     // combine same tiles and update score
                     if (down.isNotEmpty()) {
-                        this.combineTiles(down, current);
+                        if (this.combineTiles(down, current)) {
+                            combined_any_tiles = true;
+                        }
                     } else {
                         continue;
                     }
@@ -313,14 +366,15 @@ public class Twenty48TileMap extends TileMap {
         }
 
         this.smooshDown();
-        // TODO: need to move this because rn it adds a tile even when nothing is moved
-        this.addTile();
-
+        if (smoosh_completed || combined_any_tiles) {
+            this.addTile();
+        }
     }
 
-    public void smooshDown() {
+    public boolean smooshDown() {
         Twenty48Tile current;
         Twenty48Tile down;
+        boolean smoosh_completed = false;
 
         for (int col = 0; col < 4; col++) {
             for (int row = 2; row >= 0; row--) {
@@ -333,6 +387,7 @@ public class Twenty48TileMap extends TileMap {
                     if (down.isEmpty()) {
                         down.updateValue(current.getValue());
                         current.makeEmpty();
+                        smoosh_completed = true;
                     }
                 }
 
@@ -350,38 +405,12 @@ public class Twenty48TileMap extends TileMap {
                     if (down.isEmpty()) {
                         down.updateValue(current.getValue());
                         current.makeEmpty();
+                        smoosh_completed = true;
                     }
                 }
 
             }
         }
-
+        return smoosh_completed;
     }
-
-    // public void swipeRight() {
-    // // go up to down columns but right to left for rows
-    // this.smooshRight();
-    // for (int i = 0; i < this.height; ++i) {
-    // for (int j = this.width - 1; j > 0; --j) {
-    // // not checking last tile
-    // if (tiles[i][j].isNotEmpty() && tiles[i][j - 1].isNotEmpty())
-    // this.combineTiles(tiles[i][j], tiles[i][j - 1]);
-    // }
-    // }
-    // this.smooshRight();
-    // }
-
-    // public void smooshRight() {
-    // for (int i = 0; i >= this.height; ++i) {
-    // for (int j = this.width - 1; j > 0; --j) {
-    // if (tiles[i][j].isEmpty()) {
-    // tiles[i][j] = tiles[i][j - 1];
-    // tiles[i][j - 1].makeEmpty();
-    // }
-    // }
-    // }
-
-    // }
-
-    // algo: smoosh right, swipe right, smoosh right?
 }

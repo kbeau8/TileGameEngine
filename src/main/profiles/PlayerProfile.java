@@ -50,6 +50,14 @@ public class PlayerProfile {
         return sb.toString();
     }
 
+    public String getHighScores() {
+        StringBuilder sb = new StringBuilder();
+        for (Map.Entry<String, Integer> highScore : highScores.entrySet()) {
+            sb.append(highScore.getKey()).append(": ").append(highScore.getValue()).append("\n");
+        }
+        return sb.toString();
+    }
+
     public static PlayerProfile getProfile(String line) {
         String[] parts = line.split(",");
         if (parts.length < 3) return null;
