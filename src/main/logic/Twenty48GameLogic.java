@@ -2,13 +2,15 @@ package logic;
 
 import tiles.Twenty48TileMap;
 import profiles.PlayerProfile;
+import profiles.ProfileManager;
 
 public class Twenty48GameLogic extends GameLogic {
     public void checkWinConditions(Twenty48TileMap tilemap) {
     }
 
-    public boolean isGameWon(Twenty48TileMap tilemap){
+    public boolean isGameWon(Twenty48TileMap tilemap) {
         if (tilemap.is2048()) {
+            ProfileManager.saveProfiles();
             return true;
         }
         return false;
@@ -17,6 +19,7 @@ public class Twenty48GameLogic extends GameLogic {
     public boolean isGameLost(Twenty48TileMap tilemap) {
         // no empty space on board AND no tiles to combine
         if (tilemap.isEmptySpace()) {
+            ProfileManager.saveProfiles();
             return false;
         }
         return true;
