@@ -23,9 +23,8 @@ public class Twenty48Game extends Game implements KeyListener {
     private Image backgroundImage = new ImageIcon("assets/backgrounds/twenty48background.jpg").getImage();
     public int score;
     private Twenty48GameLogic gameLogic = new Twenty48GameLogic();
-    private GameTimer timer = new GameTimer(200);
+    private Twenty48GameTimer timer = new Twenty48GameTimer(0);
     private SoundManager soundManager = new SoundManager();
-    private int time_started;
 
     // settings for each game (in order): x position, y position, height/width of
     // the tile board
@@ -34,8 +33,10 @@ public class Twenty48Game extends Game implements KeyListener {
 
     // todo: take in a game number to keep track of how many games there are and
     // positioning
+
     public Twenty48Game(PlayerProfile newPlayer) {
         super(newPlayer);
+        this.setRules();
         this.player = newPlayer;
         this.grid = new Twenty48TileMap();
         soundManager.startMusic("assets/music/twenty48.wav");
@@ -58,6 +59,18 @@ public class Twenty48Game extends Game implements KeyListener {
             currentFrame.setTitle("2048 Game");
         }
 
+        this.showRules();
+
+    }
+
+    public void showRules() {
+        JOptionPane.showMessageDialog(this, "Rules:" + "\n" + rules.get("Introduction") + "\n" + "Controls:" + "\n" + rules.get("Controls"));
+    }
+
+    public void setRules() {
+        rules = new HashMap<String, String>();
+        rules.put("Introduction", "2048's objective is to slide numbered tiles on a grid to combine them to create a tile with the number 2048." + "\n" + "The game is won when a tile with the number 2048 appears on the board. The player's time is their score. The game is lost when the player has no legal moves left.");
+        rules.put("Controls", "Use the arrow keys to move the tiles in the desired direction. The tiles will move in the direction of the arrow key until they hit the edge of the board or another tile." + "\n" + "When two tiles with the same number touch, they merge into one tile with the sum of the two tiles");
     }
 
     // Implement the keyPressed method
@@ -66,7 +79,6 @@ public class Twenty48Game extends Game implements KeyListener {
         // Start the timer when a key is pressed
         if (!timer.isRunning) {
             timer.startTimer();
-            this.time_started = timer.getTimeLeft();
         }
 
         // takes key inputs and does an action for a specific key
@@ -108,7 +120,7 @@ public class Twenty48Game extends Game implements KeyListener {
         this.gameLogic.updateScore(grid.score, player);
         this.timer.update();
         if(timer.isRunning && this.gameLogic.isGameWon(grid)){
-            int score = timer.getTimeLeft() - this.time_started;
+            int score = timer.getTimeElapsed();
             JOptionPane.showMessageDialog(this, "You won! Your score was: " + score);
             this.running = false;
             this.player.updateHighScore("2048", score);
@@ -177,7 +189,7 @@ public class Twenty48Game extends Game implements KeyListener {
         g.drawString("Score: " + grid.score, game1Settings[0] + 10,
                 game1Settings[1] + game1Settings[2] + 90);
 
-        g.drawString("Timer: " + timer.getTimeLeft(), game1Settings[0] + 10,
+        g.drawString("Timer: " + timer.getTimeElapsed(), game1Settings[0] + 10,
                 game1Settings[1] + game1Settings[2] + 120);
 
         // add stop buttons to indicate person solved puzzle and so timer will stop
