@@ -3,7 +3,6 @@ package input;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-// implement KeyListener later
 public class InputManager implements KeyListener {
 
     public InputManager() {

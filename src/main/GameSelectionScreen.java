@@ -1,9 +1,6 @@
 import profiles.PlayerProfile;
 import design.FontManager;
-import entities.Player;
 import sounds.SoundManager;
-
-import input.Twenty48InputManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -79,7 +76,6 @@ public class GameSelectionScreen extends JFrame {
         buttonContainer.add(viewHighScoresButton);
         buttonPanel.add(buttonContainer);
         backgroundPanel.add(buttonPanel);
-        backgroundPanel.add(Box.createVerticalGlue());
         setLocationRelativeTo(null);
         setVisible(true);
 
@@ -96,37 +92,19 @@ public class GameSelectionScreen extends JFrame {
                 soundManager.stopMusic();
                 dispose();
 
-                JFrame frame = new JFrame();
+                JFrame frame = new JFrame("2048");
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                frame.setLocationRelativeTo(null);
                 frame.setSize(1000, 700);
                 frame.setResizable(false);
 
-                JPanel panel = new JPanel(new GridLayout(1, 2));
+                GamePanel gamePanel = new GamePanel(player1, player2, isMultiplayer);
+                frame.add(gamePanel);
 
-                Twenty48Game game1 = new Twenty48Game(player1, 1);
-
-                if (isMultiplayer) {
-                    Twenty48Game game2 = new Twenty48Game(player2, 2);
-                    Twenty48InputManager twenty48InputManager = new Twenty48InputManager(game1.grid, game2.grid);
-                    panel.addKeyListener(twenty48InputManager);
-                    panel.add(game1);
-                    panel.add(game2);
-                    frame.add(panel);
-                    game1.start();
-                    game2.start();
-                } else {
-                    Twenty48InputManager twenty48InputManager = new Twenty48InputManager(game1.grid, null);
-                    panel.addKeyListener(twenty48InputManager);
-                    panel.add(game1);
-                    frame.add(panel);
-                    game1.start();
-                }
-
-                panel.setFocusable(true);
                 frame.setVisible(true);
                 frame.setLocationRelativeTo(null);
 
+                gamePanel.startGames();
+                gamePanel.requestFocusInWindow();
             }
         });
 

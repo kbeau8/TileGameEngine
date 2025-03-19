@@ -1,16 +1,9 @@
 import java.awt.*;
-import java.awt.event.KeyListener;
 import java.util.HashMap;
 
 import javax.swing.*;
 
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-
-import entities.Player;
 import sounds.SoundManager;
-import tiles.Twenty48Tile;
 import tiles.Twenty48TileMap;
 import logic.Twenty48GameLogic;
 import profiles.PlayerProfile;
@@ -20,7 +13,6 @@ public class Twenty48Game extends Game {
     private PlayerProfile player;
     private HashMap<String, String> rules;
     public Twenty48TileMap grid;
-    static final String file_path = "../2048-assets";
     public static Image tileBoardImage = new javax.swing.ImageIcon("2048-assets-retro/tile-board.png").getImage();
     private Image backgroundImage = new ImageIcon("assets/backgrounds/twenty48background.jpg").getImage();
     private Twenty48GameLogic gameLogic = new Twenty48GameLogic();
@@ -44,17 +36,10 @@ public class Twenty48Game extends Game {
             soundManager.startMusic("assets/music/twenty48.wav");
         }
 
-        // addKeyListener(this);
-
         player.incrementGamesPlayed();
         if (player.getAllHighScores().get("2048") == null) {
             player.getAllHighScores().put("2048", 0);
         }
-
-        if (playerNum == 1) {
-            this.showRules();
-        }
-
     }
 
     public void showRules() {
@@ -93,7 +78,7 @@ public class Twenty48Game extends Game {
         }
     }
 
-    public void renderTiles(Graphics2D g) {
+    public void renderTiles(Graphics2D g, int boardX, int boardY) {
         // draws all the tiles in the correct position
         // please DO NOT change the numbers on these, the positioning is finnicky
         int screenWidth = 430;
@@ -107,14 +92,13 @@ public class Twenty48Game extends Game {
         int x = 0;
         int y = 0;
 
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
-                x = j * (tileSizeX + gap) + 4 + gameSettings[0];
-                y = i * (tileSizeY + gap) + 8 + gameSettings[1];
-                g.drawImage(grid.tiles[i][j].image, x, y, this);
+        for (int i = 0; i < gridSize; i++) {
+            for (int j = 0; j < gridSize; j++) {
+                x = j * (tileSizeX + gap) + 4 + boardX;
+                y = i * (tileSizeY + gap) + 8 + boardY;
+                g.drawImage(grid.tiles[i][j].image, x, y, tileSizeX, tileSizeY, this);
             }
         }
-
     }
 
     @Override
@@ -122,25 +106,24 @@ public class Twenty48Game extends Game {
         // custom font
         g.setFont(FontManager.getPixelFont(24f));
         g.setColor(Color.WHITE);
-        // custom background
-        g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+        if (playerNum == 1) {
+            int timerX = getWidth() / 2;
+            g.drawString("Timer: " + timer.getTimeElapsed(), timerX,gameSettings[2] + 30);
+        }
 
-        g.drawImage(tileBoardImage, gameSettings[0], gameSettings[1], gameSettings[2], gameSettings[2], this);
+        int boardX = (playerNum == 1) ? gameSettings[0] : getWidth() - gameSettings[2] - gameSettings[0];
+        int boardY = gameSettings[1];
 
         // draws tiles
-        this.renderTiles(g);
+        g.drawImage(tileBoardImage, boardX, boardY, gameSettings[2], gameSettings[2], this);
+        renderTiles(g, boardX, boardY);
 
-        g.drawString("Player: " + player.getUsername(), gameSettings[0] + 10,
-                gameSettings[1] + gameSettings[2] + 30);
+        g.drawString("Player: " + player.getUsername(), boardX + 10, boardY + gameSettings[2] + 30);
+        g.drawString("High Score: " + player.getHighScore("2048"), boardX + 10, boardY + gameSettings[2] + 60);
+        g.drawString("Score: " + grid.score, boardX + 10, boardY + gameSettings[2] + 90);
 
-        g.drawString("High Score: " + player.getHighScore("2048"), gameSettings[0] + 10,
-                gameSettings[1] + gameSettings[2] + 60);
+    }
 
-        g.drawString("Score: " + grid.score, gameSettings[0] + 10,
-                gameSettings[1] + gameSettings[2] + 90);
-
-        g.drawString("Timer: " + timer.getTimeElapsed(), gameSettings[0] + 10,
-                gameSettings[1] + gameSettings[2] + 120);
 
         // stop timer button
         // JButton stopTimerButton = new JButton("Stop Timer");
@@ -176,10 +159,13 @@ public class Twenty48Game extends Game {
         // todo: add stop buttons to indicate person solved puzzle and so timer will
         // stop for both
 
-    }
-
     @Override
     public void run() {
+        if (playerNum == 1) {
+            this.showRules();
+        }
+        this.timer.startTimer();
+
         while (running) {
             update();
             repaint();
@@ -197,5 +183,4 @@ public class Twenty48Game extends Game {
         super.paintComponent(g);
         render((Graphics2D) g);
     }
-
 }
