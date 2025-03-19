@@ -23,8 +23,45 @@ public class Twenty48InputManager extends InputManager {
         // takes key inputs and does an action for a specific key
         int code = e.getKeyCode();
 
+        if (grid2 != null && grid1 != null) {
+
+            if (code == KeyEvent.VK_D) {
+                grid1.swipeRight();
+            }
+
+            if (code == KeyEvent.VK_A) {
+                grid1.swipeLeft();
+
+            }
+
+            if (code == KeyEvent.VK_W) {
+                grid1.swipeUp();
+            }
+
+            if (code == KeyEvent.VK_S) {
+                grid1.swipeDown();
+            }
+
+            if (code == KeyEvent.VK_RIGHT) {
+                grid2.swipeRight();
+            }
+
+            if (code == KeyEvent.VK_LEFT) {
+                grid2.swipeLeft();
+
+            }
+
+            if (code == KeyEvent.VK_UP) {
+                grid2.swipeUp();
+            }
+
+            if (code == KeyEvent.VK_DOWN) {
+                grid2.swipeDown();
+            }
+        }
+
         // player 1 inputs
-        if (grid1 != null) {
+        else if (grid1 != null) {
 
             if (code == KeyEvent.VK_RIGHT) {
                 grid1.swipeRight();
@@ -43,28 +80,6 @@ public class Twenty48InputManager extends InputManager {
                 grid1.swipeDown();
             }
         }
-
-        // player 2 inputs
-        if (grid2 != null) {
-
-            if (code == KeyEvent.VK_D) {
-                grid2.swipeRight();
-            }
-
-            if (code == KeyEvent.VK_A) {
-                grid2.swipeLeft();
-
-            }
-
-            if (code == KeyEvent.VK_W) {
-                grid2.swipeUp();
-            }
-
-            if (code == KeyEvent.VK_S) {
-                grid2.swipeDown();
-            }
-        }
-
     }
 
     // these methods are probably not needed but are here just in case
