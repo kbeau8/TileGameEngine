@@ -1,16 +1,22 @@
-import design.FontManager;
-import logic.PADGameLogic;
-import profiles.PlayerProfile;
-import tiles.PADTile;
-import tiles.PADTileMap;
-import utils.Vector2D;
-import sounds.SoundManager;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.HashSet;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+
+import design.FontManager;
+import logic.PADGameLogic;
+import profiles.PlayerProfile;
+import sounds.SoundManager;
+import tiles.PADTile;
+import tiles.PADTileMap;
+import utils.Vector2D;
 
 public class PADGame extends Game implements KeyListener {
     private PlayerProfile player;
@@ -19,7 +25,7 @@ public class PADGame extends Game implements KeyListener {
     private GameTimer timer = new GameTimer(30);
     private SoundManager soundManager = new SoundManager();
 
-    private Image backgroundImage = new ImageIcon("assets/backgrounds/padbackground.png").getImage();
+    private Image backgroundImage = new ImageIcon("assets/backgrounds/padframe.png").getImage();
 
     private final int height = 5;
     private final int width = 6;
