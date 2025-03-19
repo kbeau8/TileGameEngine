@@ -1,14 +1,9 @@
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.util.HashSet;
+import java.util.HashMap;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 
 import design.FontManager;
 import logic.PADGameLogic;
@@ -16,7 +11,6 @@ import profiles.PlayerProfile;
 import sounds.SoundManager;
 import tiles.PADTile;
 import tiles.PADTileMap;
-import utils.Vector2D;
 
 public class PADGame extends Game {
     private PlayerProfile player;
@@ -45,12 +39,16 @@ public class PADGame extends Game {
 
     private int playerNum;
 
+    private HashMap<String, String> rules;
+
     public PADGame(PlayerProfile newPlayer, int playerNum) {
         super(newPlayer);
         this.player = newPlayer;
         this.tileMap = new PADTileMap(height, width);
         this.score = 0;
         this.playerNum = playerNum;
+
+        this.setRules();
 
         soundManager.startMusic("assets/music/PAD.wav");
         player.incrementGamesPlayed();
@@ -135,7 +133,7 @@ public class PADGame extends Game {
     @Override
     public void run() {
         if (playerNum == 1) {
-//            this.showRules();
+            this.showRules();
         }
         this.timer.startTimer();
 
@@ -149,6 +147,19 @@ public class PADGame extends Game {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void showRules() {
+        JOptionPane.showMessageDialog(null,
+                "Rules:" + "\n" + rules.get("Introduction") + "\n" + "Controls:" + "\n" + rules.get("Controls"));
+    }
+
+    public void setRules() {
+        rules = new HashMap<String, String>();
+        rules.put("Introduction",
+                "Puzzles & Dragons (PAD) challenges you to match colored tiles on a grid to clear them and score points.\nYou have 30 seconds and a limited health bar. Matches of three or more tiles increase your score and restore some health, while non-matching moves and time decay reduce your health.\nThe game ends when time runs out or your health hits zero.");
+        rules.put("Controls",
+                "Use the WASD keys to move a cursor around the board.\nPress F to lock a tile, then use the WASD keys to swap it with adjacent tiles.\nPress F again to unlock the tile and finalize your move.\nIf you create matches of three or more, those tiles are removed and replaced with new ones, and you earn points.\nLarger matches grant higher scores and extra health, so plan your swaps carefully to maximize your points before the timer runs out!");
     }
 
     private void restartGame() {
