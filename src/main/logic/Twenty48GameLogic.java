@@ -16,7 +16,8 @@ public class Twenty48GameLogic extends GameLogic {
 
     public boolean isGameLost(Twenty48TileMap tilemap) {
         // no empty space on board AND no tiles to combine
-        if (tilemap.isEmptySpace()) {
+        if (tilemap.isEmptySpace() || tilemap.isCombinationPossible()) {
+            //System.out.println("game is lost");
             return false;
         }
         return true;
