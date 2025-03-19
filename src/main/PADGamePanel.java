@@ -8,7 +8,7 @@ public class PADGamePanel extends GamePanel{
     protected PADInputManager inputManager;
 
     public PADGamePanel(PlayerProfile player1, PlayerProfile player2, boolean isMultiplayer) {
-        super(player1, player2, isMultiplayer, "assets/backgrounds/padbackground.jpg");
+        super(player1, player2, isMultiplayer, "assets/backgrounds/padbackground.png");
 
         player1Game = new PADGame(player1, 1);
         player1Game.setBounds(50, 50, 440, 550);
