@@ -16,15 +16,18 @@ public class GamePanel extends JPanel {
         setLayout(null);
 
         player1Game = new Twenty48Game(player1, 1);
-        player1Game.setBounds(50, 50, 440, 500);
+        player1Game.setBounds(50, 50, 440, 550);
+        player1Game.setOpaque(false);
         add(player1Game);
 
         if (isMultiplayer) {
             player2Game = new Twenty48Game(player2, 2);
-            player2Game.setBounds(550, 50, 440, 500);
+            player2Game.setBounds(550, 50, 440, 550);
+            player2Game.setOpaque(false);
             add(player2Game);
             inputManager = new Twenty48InputManager(player1Game.grid, player2Game.grid);
-        } else {
+        }
+        else {
             inputManager = new Twenty48InputManager(player1Game.grid, null);
         }
         addKeyListener(inputManager);
