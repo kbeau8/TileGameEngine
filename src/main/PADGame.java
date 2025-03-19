@@ -18,9 +18,9 @@ import tiles.PADTile;
 import tiles.PADTileMap;
 import utils.Vector2D;
 
-public class PADGame extends Game implements KeyListener {
+public class PADGame extends Game {
     private PlayerProfile player;
-    private PADTileMap tileMap;
+    public PADTileMap tileMap;
     private PADGameLogic gameLogic = new PADGameLogic();
     private GameTimer timer = new GameTimer(30);
     private SoundManager soundManager = new SoundManager();
@@ -38,33 +38,23 @@ public class PADGame extends Game implements KeyListener {
     private final double NO_MATCH_PENALTY = 5.0;
     private JButton restartButton;
 
-    private Vector2D selected = new Vector2D();
-    private boolean movingTile = false;
     private boolean gameOver = false;
 
     public int score;
     public int tileMapYOffset = 25;
 
-    public PADGame(PlayerProfile newPlayer) {
+    private int playerNum;
+
+    public PADGame(PlayerProfile newPlayer, int playerNum) {
         super(newPlayer);
         this.player = newPlayer;
         this.tileMap = new PADTileMap(height, width);
         this.score = 0;
+        this.playerNum = playerNum;
 
-        start();
-        addKeyListener(this);
         soundManager.startMusic("assets/music/PAD.wav");
         player.incrementGamesPlayed();
         player.getAllHighScores().computeIfAbsent("PAD", k -> score);
-
-        JFrame currentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
-        if (currentFrame == null) return;
-
-        int newWidth = currentFrame.getWidth() - 184;
-        int newHeight = currentFrame.getHeight() + 200;
-        currentFrame.setSize(newWidth, newHeight);
-        currentFrame.setLocationRelativeTo(null);
-        currentFrame.setTitle("Puzzles and Dragons");
     }
 
     @Override
@@ -104,8 +94,8 @@ public class PADGame extends Game implements KeyListener {
         g.drawString("Timer: " + timer.getTimeLeft(), 20, 650 + tileMapYOffset);
 
         // Selected Tile Highlight
-        g.setColor(movingTile ? Color.getHSBColor(142, 23, 100) : Color.LIGHT_GRAY);
-        g.fillRect(selected.x * tileSize, selected.y * tileSize + tileMapYOffset, tileSize, tileSize);
+        g.setColor(tileMap.movingTile ? Color.getHSBColor(142, 23, 100) : Color.LIGHT_GRAY);
+        g.fillRect(tileMap.selected.x * tileSize, tileMap.selected.y * tileSize + tileMapYOffset, tileSize, tileSize);
 
         // Tiles
         for (int y = 0; y < height; ++y) {
@@ -143,67 +133,20 @@ public class PADGame extends Game implements KeyListener {
     }
 
     @Override
-    public void keyPressed(KeyEvent e) {
-        if (!timer.isRunning) timer.startTimer();
-
-        int code = e.getKeyCode();
-        HashSet<Vector2D> removals = gameLogic.getMatches(tileMap);
-        if (code == KeyEvent.VK_ENTER) {
-            if (movingTile) {
-                tileMap.plop(removals);
-                int multiplier = 1;
-                if (removals.size() > 4) {
-                    multiplier = removals.size() - 3;
-                }
-                score += removals.size() * multiplier;
-            }
-            if (removals.isEmpty()) { 
-                health -= NO_MATCH_PENALTY;
-            } else {
-                health = Math.min(100, health + MATCH_BONUS_PER_TILE * removals.size());
-            }
-            movingTile = !movingTile;
+    public void run() {
+        if (playerNum == 1) {
+//            this.showRules();
         }
+        this.timer.startTimer();
 
-        if (movingTile) {
-            // Swap tiles in direction of movement
-            switch (code) {
-                case KeyEvent.VK_UP:
-                    if (selected.y == 0) break;
-                    tileMap.swapTiles(selected.x, selected.y, selected.x, selected.y - 1);
-                    selected.y--;
-                    break;
-                case KeyEvent.VK_DOWN:
-                    if (selected.y == height - 1) break;
-                    tileMap.swapTiles(selected.x, selected.y, selected.x, selected.y + 1);
-                    selected.y++;
-                    break;
-                case KeyEvent.VK_LEFT:
-                    if (selected.x == 0) break;
-                    tileMap.swapTiles(selected.x, selected.y, selected.x - 1, selected.y);
-                    selected.x--;
-                    break;
-                case KeyEvent.VK_RIGHT:
-                    if (selected.x == width - 1) break;
-                    tileMap.swapTiles(selected.x, selected.y, selected.x + 1, selected.y);
-                    selected.x++;
-                    break;
-            }
-        } else {
-            // Move selection location
-            switch (code) {
-                case KeyEvent.VK_UP:
-                    selected.y = Math.max(0, selected.y - 1);
-                    break;
-                case KeyEvent.VK_DOWN:
-                    selected.y = Math.min(height - 1, selected.y + 1);
-                    break;
-                case KeyEvent.VK_LEFT:
-                    selected.x = Math.max(0, selected.x - 1);
-                    break;
-                case KeyEvent.VK_RIGHT:
-                    selected.x = Math.min(width - 1, selected.x + 1);
-                    break;
+        while (running) {
+            update();
+            repaint();
+            try {
+                // Stable 60 fps
+                Thread.sleep(16);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
     }
@@ -218,10 +161,4 @@ public class PADGame extends Game implements KeyListener {
         restartButton = null;
         start();
     }
-
-    @Override
-    public void keyReleased(KeyEvent e) {}
-
-    @Override
-    public void keyTyped(KeyEvent e) {}
 }

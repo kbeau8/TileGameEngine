@@ -113,7 +113,20 @@ public class GameSelectionScreen extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 soundManager.stopMusic();
                 dispose();
-                new PADGame(player1);
+
+                JFrame frame = new JFrame("Puzzles and Dragons");
+                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                frame.setSize(1000, 700);
+                frame.setResizable(false);
+
+                PADGamePanel gamePanel = new PADGamePanel(player1, player2, isMultiplayer);
+                frame.add(gamePanel);
+
+                frame.setVisible(true);
+                frame.setLocationRelativeTo(null);
+
+                gamePanel.startGames();
+                gamePanel.requestFocusInWindow();
             }
         });
 

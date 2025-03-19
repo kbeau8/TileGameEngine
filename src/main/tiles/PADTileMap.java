@@ -6,11 +6,14 @@ import java.util.HashSet;
 
 public class PADTileMap extends TileMap {
   public PADTile[][] tiles;
+  public Vector2D selected = new Vector2D();
+  public boolean movingTile;
 
   public PADTileMap(int height, int width) {
     super();
     this.height = height;
     this.width = width;
+    this.movingTile = false;
 
     initializeTiles();
   }
