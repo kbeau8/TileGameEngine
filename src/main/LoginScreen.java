@@ -108,7 +108,7 @@ public class LoginScreen extends JFrame {
                 soundManager.stopMusic();
                 dispose();
                 if (gameSelectionScreen != null) {
-                    gameSelectionScreen.addPlayer();
+                    gameSelectionScreen.addPlayer(profile);
                 } else {
                     new GameSelectionScreen(profile);
                 }
