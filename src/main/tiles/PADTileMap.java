@@ -26,7 +26,6 @@ public class PADTileMap extends TileMap {
     // Randomly populate the board
     for (int y = 0; y < height; ++y) {
       for (int x = 0; x < width; ++x) {
-        System.out.println("New tile " + x + " " + y);
         this.tiles[y][x] = new PADTile(getRandomTile(), x, y);
       }
     }
@@ -39,8 +38,6 @@ public class PADTileMap extends TileMap {
   }
 
   public void plop(HashSet<Vector2D> removals) {
-      System.out.println("Plopping " + removals.size() + " tiles");
-
       // Remove matches found
       for (Vector2D v : removals) tiles[v.y][v.x] = null;
 
