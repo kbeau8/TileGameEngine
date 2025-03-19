@@ -95,7 +95,8 @@ public class GameSelectionScreen extends JFrame {
                 dispose();
 
                 if (isMultiplayer) {
-                    new Twenty48Game(player1, player2, isMultiplayer);
+                    Twenty48Game game = new Twenty48Game(player1, player2, isMultiplayer);
+                    game.start();
                 } else {
                     new Twenty48Game(player1, null, isMultiplayer);
                 }

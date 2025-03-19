@@ -17,44 +17,54 @@ import profiles.PlayerProfile;
 import design.FontManager;
 
 public class Twenty48Game extends Game implements KeyListener {
-    private PlayerProfile player;
+    private PlayerProfile player1;
+    private PlayerProfile player2;
     private HashMap<String, String> rules;
-    private Twenty48TileMap grid;
+    private Twenty48TileMap grid1;
+    private Twenty48TileMap grid2;
     static final String file_path = "../2048-assets";
     public static Image tileBoardImage = new javax.swing.ImageIcon("2048-assets-retro/tile-board.png").getImage();
     private Image backgroundImage = new ImageIcon("assets/backgrounds/twenty48background.jpg").getImage();
     private Twenty48GameLogic gameLogic = new Twenty48GameLogic();
-    private Twenty48GameTimer timer = new Twenty48GameTimer(0);
+    private Twenty48GameTimer timer1 = new Twenty48GameTimer(0);
+    private Twenty48GameTimer timer2 = new Twenty48GameTimer(0);
     private SoundManager soundManager = new SoundManager();
     private JFrame currentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
 
     // settings for each game (in order): x position, y position, height/width of
     // the tile board
     private int game1Settings[] = { 6, 5, 440 };
-    // private int game2Settings[] = { 600, 5, 440 };
+    private int game2Settings[] = { 600, 5, 440 };
 
-    public Twenty48Game(PlayerProfile newPlayer) {
-        super(newPlayer);
+    public Twenty48Game(PlayerProfile player1, PlayerProfile player2, boolean isMultiplayer) {
+        super(player1);
         this.setRules();
-        this.player = newPlayer;
-        this.grid = new Twenty48TileMap();
+        this.player1 = player1;
+        this.player2 = player2;
+        this.grid1 = new Twenty48TileMap();
         soundManager.startMusic("assets/music/twenty48.wav");
-        start();
         addKeyListener(this);
 
-        player.incrementGamesPlayed();
-        if (player.getAllHighScores().get("2048") == null) {
-            player.getAllHighScores().put("2048", 0);
+        player1.incrementGamesPlayed();
+        if (player1.getAllHighScores().get("2048") == null) {
+            player1.getAllHighScores().put("2048", 0);
         }
 
-        // increases screen size, needed for when there are 2 players
-        if (currentFrame != null) {
-            int newWidth = currentFrame.getWidth() + 400; // Increase width by 100// Increase height by 100
-            currentFrame.setSize(newWidth, currentFrame.getHeight() + 200);
+        currentFrame.setSize(currentFrame.getWidth(), currentFrame.getHeight() + 200);
+
+        if (player2 != null) {
+            this.grid2 = new Twenty48TileMap();
+            player2.incrementGamesPlayed();
+            if (player2.getAllHighScores().get("2048") == null) {
+                player2.getAllHighScores().put("2048", 0);
+            }
+
+            currentFrame.setSize(currentFrame.getWidth() + 300, currentFrame.getHeight());
             currentFrame.setLocationRelativeTo(null);
             currentFrame.setTitle("2048 Game");
         }
 
+        currentFrame.setLocationRelativeTo(null);
         this.showRules();
 
     }
@@ -75,35 +85,66 @@ public class Twenty48Game extends Game implements KeyListener {
                         + "\n"
                         + "When two tiles with the same number touch, they merge into one tile with the sum of the two tiles\nStop the timer only when you have won the game.");
     }
+    // todo: add multiplayer rules
 
     // Implement the keyPressed method
     @Override
     public void keyPressed(KeyEvent e) {
         // Start the timer when a key is pressed
-        if (!timer.isRunning) {
-            timer.startTimer();
-        }
 
         // takes key inputs and does an action for a specific key
         int code = e.getKeyCode();
-        if (code == KeyEvent.VK_RIGHT) {
-            grid.swipeRight();
+
+        // player 1 inputs
+        if (player1 != null) {
+
+            if (!timer1.isRunning) {
+                timer1.startTimer();
+            }
+
+            if (code == KeyEvent.VK_RIGHT) {
+                grid1.swipeRight();
+            }
+
+            if (code == KeyEvent.VK_LEFT) {
+                grid1.swipeLeft();
+
+            }
+
+            if (code == KeyEvent.VK_UP) {
+                grid1.swipeUp();
+            }
+
+            if (code == KeyEvent.VK_DOWN) {
+                grid1.swipeDown();
+            }
         }
 
-        if (code == KeyEvent.VK_LEFT) {
-            grid.swipeLeft();
+        // player 2 inputs
+        if (player2 != null) {
 
+            if (!timer2.isRunning) {
+                timer2.startTimer();
+            }
+
+            if (code == KeyEvent.VK_D) {
+                grid2.swipeRight();
+            }
+
+            if (code == KeyEvent.VK_A) {
+                grid2.swipeLeft();
+
+            }
+
+            if (code == KeyEvent.VK_W) {
+                grid2.swipeUp();
+            }
+
+            if (code == KeyEvent.VK_S) {
+                grid2.swipeDown();
+            }
         }
 
-        if (code == KeyEvent.VK_UP) {
-            grid.swipeUp();
-        }
-
-        if (code == KeyEvent.VK_DOWN) {
-            grid.swipeDown();
-        }
-
-        // TODO: add key listeners for WASD for second player
     }
 
     // these methods are probably not needed but are here just in case
@@ -117,22 +158,39 @@ public class Twenty48Game extends Game implements KeyListener {
 
     @Override
     public void update() {
-        gameLogic.updateScore(grid.score, player);
-        this.timer.update();
-        if (timer.isRunning && this.gameLogic.isGameWon(grid)) {
-            int time = timer.getTimeElapsed();
+        gameLogic.updateScore(grid1.score, player1);
+        if (player2 != null) {
+            gameLogic.updateScore(grid2.score, player2);
+
+            this.timer2.update();
+            if (timer2.isRunning && this.gameLogic.isGameWon(grid2)) {
+                int time2 = timer2.getTimeElapsed();
+                repaint();
+                JOptionPane.showMessageDialog(this,
+                        player2.getUsername() + " won! Score: " + gameLogic.getScore(grid2) + " Time: " + time2);
+                this.running = false;
+            } else if (timer2.isRunning && this.gameLogic.isGameLost(grid2)) {
+                repaint();
+                JOptionPane.showMessageDialog(this,
+                        player2.getUsername() + " lost! Score: " + gameLogic.getScore(grid2));
+                this.running = false;
+            }
+        }
+        this.timer1.update();
+        if (timer1.isRunning && this.gameLogic.isGameWon(grid1)) {
+            int time1 = timer1.getTimeElapsed();
             repaint();
             JOptionPane.showMessageDialog(this,
-                    player.getUsername() + " won! Score: " + gameLogic.getScore(grid) + " Time: " + time);
+                    player1.getUsername() + " won! Score: " + gameLogic.getScore(grid1) + " Time: " + time1);
             this.running = false;
-        } else if (timer.isRunning && this.gameLogic.isGameLost(grid)) {
+        } else if (timer1.isRunning && this.gameLogic.isGameLost(grid1)) {
             repaint();
-            JOptionPane.showMessageDialog(this, player.getUsername() + " lost! Score: " + gameLogic.getScore(grid));
+            JOptionPane.showMessageDialog(this, player1.getUsername() + " lost! Score: " + gameLogic.getScore(grid1));
             this.running = false;
         }
     }
 
-    public void renderTiles(Graphics2D g, Twenty48TileMap map) {
+    public void renderTiles(Graphics2D g) {
         // draws all the tiles in the correct position
         // please DO NOT change the numbers on these, the positioning is finnicky
         int screenWidth = 430;
@@ -151,18 +209,20 @@ public class Twenty48Game extends Game implements KeyListener {
             for (int j = 0; j < 4; j++) {
                 x = j * (tileSizeX + gap) + 4 + game1Settings[0];
                 y = i * (tileSizeY + gap) + 8 + game1Settings[1];
-                g.drawImage(map.tiles[i][j].image, x, y, this);
+                g.drawImage(grid1.tiles[i][j].image, x, y, this);
             }
         }
 
-        // tile board 2
-        // for (int i = 0; i < 4; i++) {
-        // for (int j = 0; j < 4; j++) {
-        // x = j * (tileSizeX + gap) + 4 + game2Settings[0];
-        // y = i * (tileSizeY + gap) + 8 + game2Settings[1];
-        // g.drawImage(map.tiles[i][j].image, x, y, this);
-        // }
-        // }
+        // tile board 2 for second player
+        if (player2 != null) {
+            for (int i = 0; i < 4; i++) {
+                for (int j = 0; j < 4; j++) {
+                    x = j * (tileSizeX + gap) + 4 + game2Settings[0];
+                    y = i * (tileSizeY + gap) + 8 + game2Settings[1];
+                    g.drawImage(grid2.tiles[i][j].image, x, y, this);
+                }
+            }
+        }
     }
 
     @Override
@@ -172,13 +232,17 @@ public class Twenty48Game extends Game implements KeyListener {
         g.setColor(Color.WHITE);
         // custom background
         g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
-        // draws tile board
+        // draws tile board 1
         g.drawImage(tileBoardImage, game1Settings[0], game1Settings[1], game1Settings[2], game1Settings[2], this);
-        // g.drawImage(tileBoardImage, game2Settings[0], game2Settings[1],
-        // game2Settings[2], game2Settings[2], this);
+
+        // draws tile board 2
+        if (player2 != null) {
+            g.drawImage(tileBoardImage, game2Settings[0], game2Settings[1],
+                    game2Settings[2], game2Settings[2], this);
+        }
 
         // draws tiles
-        this.renderTiles(g, grid);
+        this.renderTiles(g);
 
         // stop timer button
         JButton stopTimerButton = new JButton("Stop Timer");
@@ -189,24 +253,41 @@ public class Twenty48Game extends Game implements KeyListener {
         stopTimerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                timer.stopTimer();
+                timer1.stopTimer();
+                timer2.stopTimer();
+                // todo: stop game running and display score??
             }
         });
 
-        // Draw text at a specific location (x, y)
-        g.drawString("Player: " + player.getUsername(), game1Settings[0] + 10,
+        // player 1 text, draw text at a specific location (x, y)
+        g.drawString("Player: " + player1.getUsername(), game1Settings[0] + 10,
                 game1Settings[1] + game1Settings[2] + 30);
 
-        g.drawString("High Score: " + player.getHighScore("2048"), game1Settings[0] + 10,
+        g.drawString("High Score: " + player1.getHighScore("2048"), game1Settings[0] + 10,
                 game1Settings[1] + game1Settings[2] + 60);
 
-        g.drawString("Score: " + grid.score, game1Settings[0] + 10,
+        g.drawString("Score: " + grid1.score, game1Settings[0] + 10,
                 game1Settings[1] + game1Settings[2] + 90);
 
-        g.drawString("Timer: " + timer.getTimeElapsed(), game1Settings[0] + 10,
+        g.drawString("Timer: " + timer1.getTimeElapsed(), game1Settings[0] + 10,
                 game1Settings[1] + game1Settings[2] + 120);
 
-        // player goes back to game selection
+        // player 2 text
+        if (player2 != null) {
+            g.drawString("Player: " + player2.getUsername(), game2Settings[0] + 10,
+                    game2Settings[1] + game2Settings[2] + 30);
+
+            g.drawString("High Score: " + player2.getHighScore("2048"), game2Settings[0] + 10,
+                    game2Settings[1] + game2Settings[2] + 60);
+
+            g.drawString("Score: " + grid2.score, game2Settings[0] + 10,
+                    game2Settings[1] + game2Settings[2] + 90);
+
+            g.drawString("Timer: " + timer2.getTimeElapsed(), game2Settings[0] + 10,
+                    game2Settings[1] + game2Settings[2] + 120);
+        }
+
+        // player(s) goes back to game selection
         JButton exitButton = new JButton("Back to Main");
         exitButton.setBounds(465, 100, 120, 40);
         this.add(exitButton);
@@ -218,14 +299,13 @@ public class Twenty48Game extends Game implements KeyListener {
             public void actionPerformed(ActionEvent e) {
                 running = false;
                 currentFrame.dispose();
-                new GameSelectionScreen(player);
+                new GameSelectionScreen(player1);
             }
         });
 
-        // add stop buttons to indicate person solved puzzle and so timer will stop
+        // todo: add stop buttons to indicate person solved puzzle and so timer will
+        // stop for both
 
-        // g.drawString("Player: " + player.getUsername(), game2Settings[0] + 10,
-        // game2Settings[1] + game2Settings[2] + 30);
     }
 
     @Override
