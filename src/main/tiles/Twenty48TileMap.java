@@ -17,8 +17,9 @@ public class Twenty48TileMap extends TileMap {
         this.width = 4;
         this.score = 0;
         initializeNormalCondition();
-        // initializeWinCondition();
-        // initializeLoseCondition();
+        //initializeWinCondition();
+        //initializeLoseCondition();
+        //initializeBoardFullCombinationPossible();
     }
 
     private void initializeWinCondition() {
@@ -38,6 +39,12 @@ public class Twenty48TileMap extends TileMap {
                 }
             }
         }
+    }
+
+    private void initializeBoardFullCombinationPossible() {
+        initializeBlankTiles();
+        initializeLoseCondition();
+        this.tiles[0][1] = new Twenty48Tile(2, 0, 1);
     }
 
     private void initializeBlankTiles() {
@@ -105,6 +112,21 @@ public class Twenty48TileMap extends TileMap {
             this.score += newValue;
             return true;
         }
+        return false;
+    }
+
+    public boolean isCombinationPossible() {
+        for (int i = 0; i < this.height; ++i) {
+            for (int j = 0; j < this.width; ++j) {
+                if (j < this.width - 1 && this.tiles[i][j].getValue() == this.tiles[i][j + 1].getValue()) {
+                    return true;
+                }
+                if (i < this.height - 1 && this.tiles[i][j].getValue() == this.tiles[i + 1][j].getValue()) {
+                    return true;
+                }
+            }
+        }
+        //System.out.println("Combination not possible");
         return false;
     }
 
