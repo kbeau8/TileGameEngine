@@ -1,5 +1,6 @@
 import profiles.PlayerProfile;
 import design.FontManager;
+import entities.Player;
 import sounds.SoundManager;
 
 import javax.swing.*;
@@ -9,7 +10,9 @@ import java.awt.event.ActionListener;
 
 public class GameSelectionScreen extends JFrame {
     private PlayerProfile player1;
-    private PlayerProfile player2 = null;
+    private PlayerProfile player2;
+    public PlayerProfile players[] = { null, null };
+    public boolean isMultiplayer;
     JButton addPlayerButton = new JButton("Add Player 2");
     Font customFont = FontManager.getPixelFont(20f);
     private Image backgroundImage = new ImageIcon("assets/backgrounds/selectionbackground.jpg").getImage();
@@ -17,6 +20,8 @@ public class GameSelectionScreen extends JFrame {
 
     public GameSelectionScreen(PlayerProfile player1) {
         this.player1 = player1;
+        this.players[0] = player1;
+        isMultiplayer = false;
         setTitle("Select a Game");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -32,7 +37,7 @@ public class GameSelectionScreen extends JFrame {
         JPanel headerPanel = new JPanel();
         headerPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 200, 5));
         headerPanel.setBackground(Color.BLUE);
-        headerPanel.setMaximumSize(new Dimension(800,50));
+        headerPanel.setMaximumSize(new Dimension(800, 50));
 
         welcomeLabel.setFont(customFont);
         headerPanel.add(welcomeLabel);
@@ -88,7 +93,12 @@ public class GameSelectionScreen extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 soundManager.stopMusic();
                 dispose();
-                new Twenty48Game(player1);
+
+                if (isMultiplayer) {
+                    new Twenty48Game(player1, player2, isMultiplayer);
+                } else {
+                    new Twenty48Game(player1, null, isMultiplayer);
+                }
             }
         });
 
@@ -104,13 +114,16 @@ public class GameSelectionScreen extends JFrame {
         viewHighScoresButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(GameSelectionScreen.this, player1.getUsername() + "'s High Scores:\n" + player1.getHighScores());
+                JOptionPane.showMessageDialog(GameSelectionScreen.this,
+                        player1.getUsername() + "'s High Scores:\n" + player1.getHighScores());
             }
         });
     }
 
-    public void addPlayer() {
+    public void addPlayer(PlayerProfile player2) {
         this.player2 = player2;
+        this.players[1] = player2;
+        isMultiplayer = true;
         JOptionPane.showMessageDialog(this, "Second player logged in: " + player2.getUsername());
         addPlayerButton.setEnabled(false);
     }
