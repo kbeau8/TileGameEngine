@@ -189,6 +189,7 @@ public class Twenty48Game extends Game implements KeyListener {
         stopTimerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                soundManager.stopMusic();
                 timer.stopTimer();
             }
         });
@@ -217,6 +218,7 @@ public class Twenty48Game extends Game implements KeyListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 running = false;
+                soundManager.stopMusic();
                 currentFrame.dispose();
                 new GameSelectionScreen(player);
             }
