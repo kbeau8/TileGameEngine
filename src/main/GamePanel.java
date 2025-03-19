@@ -2,35 +2,21 @@ import profiles.PlayerProfile;
 
 import javax.swing.*;
 import java.awt.*;
+import input.InputManager;
 
-import input.Twenty48InputManager;
+public abstract class GamePanel extends JPanel {
+    protected Image backgroundImage;
+    protected Game player1Game;
+    protected Game player2Game;
+    protected InputManager inputManager;
 
-public class GamePanel extends JPanel {
-    private Image backgroundImage;
-    private Twenty48Game player1Game;
-    private Twenty48Game player2Game;
-    private Twenty48InputManager inputManager;
-
-    public GamePanel(PlayerProfile player1, PlayerProfile player2, boolean isMultiplayer) {
-        this.backgroundImage = new ImageIcon("assets/backgrounds/twenty48background.jpg").getImage();
+    public GamePanel(PlayerProfile player1, PlayerProfile player2, boolean isMultiplayer, String backgroundImagePath) {
+        setBackgroundImage(backgroundImagePath);
         setLayout(null);
+    }
 
-        player1Game = new Twenty48Game(player1, 1);
-        player1Game.setBounds(50, 50, 440, 550);
-        player1Game.setOpaque(false);
-        add(player1Game);
-
-        if (isMultiplayer) {
-            player2Game = new Twenty48Game(player2, 2);
-            player2Game.setBounds(550, 50, 440, 550);
-            player2Game.setOpaque(false);
-            add(player2Game);
-            inputManager = new Twenty48InputManager(player1Game.grid, player2Game.grid);
-        }
-        else {
-            inputManager = new Twenty48InputManager(player1Game.grid, null);
-        }
-        addKeyListener(inputManager);
+    protected void setBackgroundImage(String path) {
+        this.backgroundImage = new ImageIcon(path).getImage();
     }
 
     @Override

@@ -97,7 +97,7 @@ public class GameSelectionScreen extends JFrame {
                 frame.setSize(1000, 700);
                 frame.setResizable(false);
 
-                GamePanel gamePanel = new GamePanel(player1, player2, isMultiplayer);
+                Twenty48GamePanel gamePanel = new Twenty48GamePanel(player1, player2, isMultiplayer);
                 frame.add(gamePanel);
 
                 frame.setVisible(true);
