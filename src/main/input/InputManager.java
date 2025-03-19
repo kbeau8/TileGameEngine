@@ -2,11 +2,23 @@ package input;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.HashSet;
-import java.util.Set;
 
-// implement KeyListener later
-public class InputManager {
-    private Set<Integer> keyPresses = new HashSet<>();
+public class InputManager implements KeyListener {
 
+    public InputManager() {
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+
+    }
+
+    // these methods are probably not needed but are here just in case
+    @Override
+    public void keyReleased(KeyEvent e) {
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+    }
 }

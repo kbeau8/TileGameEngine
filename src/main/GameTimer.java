@@ -1,7 +1,7 @@
 public class GameTimer {
-    private int timeLeft;
+    protected int timeLeft;
     public boolean isRunning;
-    private long lastUpdate;
+    protected long lastUpdate;
 
     public GameTimer(int startTime) {
         this.timeLeft = startTime;
