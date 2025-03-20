@@ -116,7 +116,7 @@ public class GameSelectionScreen extends JFrame {
 
                 JFrame frame = new JFrame("Puzzles and Dragons");
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                frame.setSize(1000, 700);
+                frame.setSize(isMultiplayer ? 1500 : 1000, 800);
                 frame.setResizable(false);
 
                 PADGamePanel gamePanel = new PADGamePanel(player1, player2, isMultiplayer);
