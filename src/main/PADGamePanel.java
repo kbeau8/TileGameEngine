@@ -10,13 +10,13 @@ public class PADGamePanel extends GamePanel{
         super(player1, player2, isMultiplayer, "assets/backgrounds/padbackground.png");
 
         player1Game = new PADGame(player1, 1);
-        player1Game.setBounds(50, 50, 800, 550);
+        player1Game.setBounds(50, 50, 800, 800);
         player1Game.setOpaque(false);
         add(player1Game);
 
         if (isMultiplayer) {
             player2Game = new PADGame(player2, 2);
-            player2Game.setBounds(750, 50, 800, 550);
+            player2Game.setBounds(750, 50, 800, 800);
             player2Game.setOpaque(false);
             add(player2Game);
             inputManager = new PADInputManager(player1Game.tileMap, player2Game.tileMap);

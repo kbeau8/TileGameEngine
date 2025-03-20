@@ -3,7 +3,9 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.util.HashMap;
 
-import javax.swing.*;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
 
 import design.FontManager;
 import logic.PADGameLogic;
@@ -16,7 +18,7 @@ public class PADGame extends Game {
     private PlayerProfile player;
     public PADTileMap tileMap;
     private PADGameLogic gameLogic = new PADGameLogic();
-    private GameTimer timer = new GameTimer(30);
+    private GameTimer timer = new GameTimer(180);
     private SoundManager soundManager = new SoundManager();
 
     private Image backgroundImage = new ImageIcon("assets/backgrounds/padframe.png").getImage();
@@ -27,7 +29,7 @@ public class PADGame extends Game {
 
     private double health = 100;
     private long lastHealthUpdate = System.currentTimeMillis();
-    private final double HEALTH_DECAY_PER_SECOND = 0.5;
+    private final double HEALTH_DECAY_PER_SECOND = 1.0;
     private final double MATCH_BONUS_PER_TILE = 1.0; 
     private final double NO_MATCH_PENALTY = 5.0;
     private JButton restartButton;
@@ -131,13 +133,13 @@ public class PADGame extends Game {
 
         g.drawImage(heart, heartX, heartY, targetHeartWidth, targetHeartHeight, null);
 
-        // High Score
+        // Text Panel
         g.setColor(Color.WHITE);
-        g.fillRoundRect(600, 240, 350, 90,20,20);
+        g.fillRoundRect(180, 530, 350, 90,20,20);
         g.setColor(Color.BLACK);
-        g.drawString("Score: " + score, 620, 270);
-        g.drawString("Timer: " + timer.getTimeLeft(), 620, 290);
-        g.drawString("High Score: " + player.getHighScore("PAD"), 620, 310);
+        g.drawString("Score: " + score, 200, 560);
+        g.drawString("Timer: " + timer.getTimeLeft(), 200, 580);
+        g.drawString("High Score: " + player.getHighScore("PAD"), 200, 600);
 
 
         if (gameOver) {
@@ -176,7 +178,7 @@ public class PADGame extends Game {
     public void setRules() {
         rules = new HashMap<String, String>();
         rules.put("Introduction",
-                "Puzzles & Dragons (PAD) challenges you to match colored tiles on a grid to clear them and score points.\nYou have 30 seconds and a limited health bar. Matches of three or more tiles increase your score and restore some health, while non-matching moves and time decay reduce your health.\nThe game ends when time runs out or your health hits zero.");
+                "Puzzles & Dragons (PAD) challenges you to match colored tiles on a grid to clear them and score points.\nYou have 180 seconds and a limited health bar. Matches of three or more tiles increase your score and restore some health, while non-matching moves and time decay reduce your health.\nThe game ends when time runs out or your health hits zero.");
         rules.put("Controls",
                 "Use the WASD keys to move a cursor around the board.\nPress F to lock a tile, then use the WASD keys to swap it with adjacent tiles.\nPress F again to unlock the tile and finalize your move.\nIf you create matches of three or more, those tiles are removed and replaced with new ones, and you earn points.\nLarger matches grant higher scores and extra health, so plan your swaps carefully to maximize your points before the timer runs out!");
     }
@@ -184,7 +186,7 @@ public class PADGame extends Game {
     private void restartGame() {
         health = 100;
         score = 0;
-        timer = new GameTimer(30);
+        timer = new GameTimer(180);
         tileMap = new PADTileMap(height, width);
         gameOver = false;
         remove(restartButton);
