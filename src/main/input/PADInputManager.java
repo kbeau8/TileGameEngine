@@ -39,11 +39,11 @@ public class PADInputManager extends InputManager {
                     multiplier = removals1.size() - 3;
                 }
                 grid1.score += removals1.size() * multiplier;
-            }
-            if (removals1.isEmpty()) {
-                grid1.health -= NO_MATCH_PENALTY;
-            } else {
-                grid1.health = Math.min(100, grid1.health + MATCH_BONUS_PER_TILE * removals1.size());
+                if (removals1.isEmpty()) {
+                    grid1.health -= NO_MATCH_PENALTY;
+                } else {
+                    grid1.health = Math.min(100, grid1.health + MATCH_BONUS_PER_TILE * removals1.size());
+                }
             }
             grid1.movingTile = !grid1.movingTile;
         }
@@ -59,11 +59,11 @@ public class PADInputManager extends InputManager {
                         multiplier = removals2.size() - 3;
                     }
                     grid2.score += removals2.size() * multiplier;
-                }
-                if (removals2.isEmpty()) {
-                    grid2.health -= NO_MATCH_PENALTY;
-                } else {
-                    grid2.health = Math.min(100, grid2.health + MATCH_BONUS_PER_TILE * removals2.size());
+                    if (removals2.isEmpty()) {
+                        grid2.health -= NO_MATCH_PENALTY;
+                    } else {
+                        grid2.health = Math.min(100, grid2.health + MATCH_BONUS_PER_TILE * removals2.size());
+                    }
                 }
                 grid2.movingTile = !grid2.movingTile;
             }
