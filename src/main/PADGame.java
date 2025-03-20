@@ -77,7 +77,11 @@ public class PADGame extends Game {
             add(restartButton);
             repaint();
         }
-        if (gameOver) return;
+        if (gameOver) {
+            health = 0;
+            return;
+
+        }
 
     }
 
@@ -88,8 +92,7 @@ public class PADGame extends Game {
         g.setFont(FontManager.getPixelFont(24f));
         g.setColor(Color.BLACK);
 
-        g.drawString("Score: " + score, 20, 590 + tileMapYOffset);
-        g.drawString("Timer: " + timer.getTimeLeft(), 20, 650 + tileMapYOffset);
+        
 
         // Selected Tile Highlight
         g.setColor(tileMap.movingTile ? Color.getHSBColor(142, 23, 100) : Color.LIGHT_GRAY);
@@ -107,19 +110,35 @@ public class PADGame extends Game {
             }
         }
         // Health Bar
-        g.setColor(Color.GRAY); 
-        int healthBarWidth = tileSize * width; 
-        int healthBarHeight = 20; 
-        g.fillRect(0, 5, healthBarWidth, healthBarHeight); 
-        int currentHealthWidth = (int)(healthBarWidth * (health / 100.0)); 
+        Image heart = new ImageIcon("pad-assets/heart.png").getImage();
+        int targetHeartWidth = 45;
+        int targetHeartHeight = 45;
+        int heartX = -7;
+        int heartY = 16 - (targetHeartHeight / 2);
+        
+
+
+        g.setColor(Color.GRAY);
+        int healthBarWidth = tileSize * width;
+        int healthBarHeight = 25;
+        g.fillRoundRect(0, 5, healthBarWidth, healthBarHeight, 10, 10);
+        int currentHealthWidth = (int)(healthBarWidth * (health / 100.0));
         g.setColor(Color.GREEN);
-        g.fillRect(0, 5, currentHealthWidth, healthBarHeight);
+        g.fillRoundRect(0, 5, currentHealthWidth, healthBarHeight, 10, 10);
         g.setColor(Color.BLACK);
-        g.drawRect(0, 5, healthBarWidth, healthBarHeight);
-        g.drawString("Health: " + (int)health, 210, 20);
+        g.drawRoundRect(0, 5, healthBarWidth, healthBarHeight, 10, 10);
+        g.drawString("Health: " + (int)health, 210, 25);
+
+        g.drawImage(heart, heartX, heartY, targetHeartWidth, targetHeartHeight, null);
 
         // High Score
-        g.drawString("High Score: " + player.getHighScore("PAD"), 20, 590 + 60);
+        g.setColor(Color.WHITE);
+        g.fillRoundRect(600, 240, 350, 90,20,20);
+        g.setColor(Color.BLACK);
+        g.drawString("Score: " + score, 620, 270);
+        g.drawString("Timer: " + timer.getTimeLeft(), 620, 290);
+        g.drawString("High Score: " + player.getHighScore("PAD"), 620, 310);
+
 
         if (gameOver) {
             g.setColor(Color.BLACK);
