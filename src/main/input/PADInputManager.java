@@ -14,6 +14,10 @@ public class PADInputManager extends InputManager {
 
     private final int height = 5;
     private final int width = 6;
+    
+    private final double HEALTH_DECAY_PER_SECOND = 1.0;
+    private final double MATCH_BONUS_PER_TILE = 1.0;
+    private final double NO_MATCH_PENALTY = 5.0;
 
     public PADInputManager(PADTileMap grid1, PADTileMap grid2) {
         super();
@@ -34,12 +38,12 @@ public class PADInputManager extends InputManager {
                 if (removals1.size() > 4) {
                     multiplier = removals1.size() - 3;
                 }
-//                score += removals.size() * multiplier;
+                grid1.score += removals1.size() * multiplier;
             }
             if (removals1.isEmpty()) {
-//                health -= NO_MATCH_PENALTY;
+                grid1.health -= NO_MATCH_PENALTY;
             } else {
-//                health = Math.min(100, health + MATCH_BONUS_PER_TILE * removals.size());
+                grid1.health = Math.min(100, grid1.health + MATCH_BONUS_PER_TILE * removals1.size());
             }
             grid1.movingTile = !grid1.movingTile;
         }
@@ -54,12 +58,12 @@ public class PADInputManager extends InputManager {
                     if (removals2.size() > 4) {
                         multiplier = removals2.size() - 3;
                     }
-//                score += removals.size() * multiplier;
+                    grid2.score += removals2.size() * multiplier;
                 }
                 if (removals2.isEmpty()) {
-//                health -= NO_MATCH_PENALTY;
+                    grid2.health -= NO_MATCH_PENALTY;
                 } else {
-//                health = Math.min(100, health + MATCH_BONUS_PER_TILE * removals.size());
+                    grid2.health = Math.min(100, grid2.health + MATCH_BONUS_PER_TILE * removals2.size());
                 }
                 grid2.movingTile = !grid2.movingTile;
             }

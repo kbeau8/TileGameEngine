@@ -9,6 +9,9 @@ public class PADTileMap extends TileMap {
   public Vector2D selected = new Vector2D();
   public boolean movingTile;
 
+  public int score = 0;
+  public double health = 100;
+
   public PADTileMap(int height, int width) {
     super();
     this.height = height;

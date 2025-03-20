@@ -27,16 +27,12 @@ public class PADGame extends Game {
     private final int width = 6;
     private final int tileSize = 100;
 
-    private double health = 100;
     private long lastHealthUpdate = System.currentTimeMillis();
     private final double HEALTH_DECAY_PER_SECOND = 1.0;
-    private final double MATCH_BONUS_PER_TILE = 1.0; 
-    private final double NO_MATCH_PENALTY = 5.0;
     private JButton restartButton;
 
     private boolean gameOver = false;
 
-    public int score;
     public int tileMapYOffset = 25;
 
     private int playerNum;
@@ -47,14 +43,13 @@ public class PADGame extends Game {
         super(newPlayer);
         this.player = newPlayer;
         this.tileMap = new PADTileMap(height, width);
-        this.score = 0;
         this.playerNum = playerNum;
 
         this.setRules();
 
         soundManager.startMusic("assets/music/PAD.wav");
         player.incrementGamesPlayed();
-        player.getAllHighScores().computeIfAbsent("PAD", k -> score);
+        player.getAllHighScores().computeIfAbsent("PAD", k -> tileMap.score);
     }
 
     @Override
@@ -63,14 +58,14 @@ public class PADGame extends Game {
 
         long now = System.currentTimeMillis();
         double elapsedSeconds = (now - lastHealthUpdate) / 1000.0;
-        health -= HEALTH_DECAY_PER_SECOND * elapsedSeconds;
+        tileMap.health -= HEALTH_DECAY_PER_SECOND * elapsedSeconds;
         lastHealthUpdate = now;
-        if (health < 0) health = 0;
+        if (tileMap.health < 0) tileMap.health = 0;
 
-        if ((health <= 0 || timer.getTimeLeft() <= 0 )&& !gameOver) {
+        if ((tileMap.health <= 0 || timer.getTimeLeft() <= 0) && !gameOver) {
             gameOver = true;
             timer.stopTimer();
-            player.updateHighScore("PAD", score);
+            player.updateHighScore("PAD", tileMap.score);
             
             restartButton = new JButton("Restart");
             restartButton.setBounds(tileSize * width / 2 - 50, tileSize * height / 2 + 60 - 25, 100, 50);
@@ -80,11 +75,8 @@ public class PADGame extends Game {
             repaint();
         }
         if (gameOver) {
-            health = 0;
-            return;
-
+            tileMap.health = 0;
         }
-
     }
 
     @Override
@@ -93,8 +85,6 @@ public class PADGame extends Game {
 
         g.setFont(FontManager.getPixelFont(24f));
         g.setColor(Color.BLACK);
-
-        
 
         // Selected Tile Highlight
         g.setColor(tileMap.movingTile ? Color.getHSBColor(142, 23, 100) : Color.LIGHT_GRAY);
@@ -124,12 +114,12 @@ public class PADGame extends Game {
         int healthBarWidth = tileSize * width;
         int healthBarHeight = 25;
         g.fillRoundRect(0, 5, healthBarWidth, healthBarHeight, 10, 10);
-        int currentHealthWidth = (int)(healthBarWidth * (health / 100.0));
+        int currentHealthWidth = (int)(healthBarWidth * (tileMap.health / 100.0));
         g.setColor(Color.GREEN);
         g.fillRoundRect(0, 5, currentHealthWidth, healthBarHeight, 10, 10);
         g.setColor(Color.BLACK);
         g.drawRoundRect(0, 5, healthBarWidth, healthBarHeight, 10, 10);
-        g.drawString("Health: " + (int)health, 210, 25);
+        g.drawString("Health: " + (int)tileMap.health, 210, 25);
 
         g.drawImage(heart, heartX, heartY, targetHeartWidth, targetHeartHeight, null);
 
@@ -137,7 +127,7 @@ public class PADGame extends Game {
         g.setColor(Color.WHITE);
         g.fillRoundRect(180, 530, 350, 90,20,20);
         g.setColor(Color.BLACK);
-        g.drawString("Score: " + score, 200, 560);
+        g.drawString("Score: " + tileMap.score, 200, 560);
         g.drawString("Timer: " + timer.getTimeLeft(), 200, 580);
         g.drawString("High Score: " + player.getHighScore("PAD"), 200, 600);
 
@@ -184,8 +174,8 @@ public class PADGame extends Game {
     }
 
     private void restartGame() {
-        health = 100;
-        score = 0;
+        tileMap.health = 100;
+        tileMap.score = 0;
         timer = new GameTimer(180);
         tileMap = new PADTileMap(height, width);
         gameOver = false;
